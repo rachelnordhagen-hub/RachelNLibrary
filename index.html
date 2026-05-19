@@ -7,29 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0e0c;
-    --bg2: #1a1814;
-    --bg3: #222018;
-    --border: #2a2520;
-    --gold: #c8a96e;
-    --gold-light: #dfc080;
-    --text: #e8e0d0;
-    --text-muted: #8a8078;
-    --text-dim: #5a5048;
-    --red: #7a2020;
-    --red-light: #f07050;
-    --green: #2a4a2a;
+    --bg: #0f0e0c; --bg2: #1a1814; --bg3: #222018;
+    --border: #2a2520; --gold: #c8a96e; --gold-light: #dfc080;
+    --text: #e8e0d0; --text-muted: #8a8078; --text-dim: #5a5048;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Lato', sans-serif; min-height: 100vh; }
   h1, h2, h3 { font-family: 'Playfair Display', serif; }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: #1a1814; }
   ::-webkit-scrollbar-thumb { background: #3a3530; border-radius: 3px; }
 
-  /* Buttons */
   .btn { border: none; border-radius: 6px; cursor: pointer; font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .5px; padding: 10px 20px; transition: all .15s; }
   .btn-primary { background: var(--gold); color: var(--bg); }
   .btn-primary:hover { background: var(--gold-light); }
@@ -38,8 +26,10 @@
   .btn-ghost:hover { background: #c8a96e18; border-color: #c8a96e88; }
   .btn-danger { background: transparent; border: 1px solid #5a2020; color: #c06060; font-weight: 400; }
   .btn-danger:hover { background: #5a202020; }
+  .btn-request { background: transparent; border: 1px solid #4a7a4a; color: #8aba8a; font-weight: 400; }
+  .btn-request:hover { background: #4a7a4a20; }
+  .btn-sm { font-size: 12px; padding: 6px 12px; }
 
-  /* Inputs */
   input, textarea, select {
     background: var(--bg2); color: var(--text); border: 1px solid var(--border);
     border-radius: 6px; font-family: 'Lato', sans-serif; font-size: 14px;
@@ -48,42 +38,27 @@
   input:focus, textarea:focus, select:focus { border-color: var(--gold); }
   textarea { resize: vertical; }
   select option { background: var(--bg2); }
-
-  /* Label */
   .field-label { color: var(--text-muted); display: block; font-size: 11px; letter-spacing: .8px; margin-bottom: 5px; text-transform: uppercase; }
 
-  /* Animations */
   @keyframes fadeIn { from { opacity:0; transform:translateY(-8px) } to { opacity:1; transform:none } }
   @keyframes slideUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:none } }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Toast */
-  #toast {
-    animation: fadeIn .2s ease;
-    border-radius: 8px; bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.5);
-    color: #fff; display: none; font-size: 14px; padding: 12px 20px;
-    position: fixed; right: 20px; z-index: 9999;
-  }
+  #toast { animation: fadeIn .2s ease; border-radius: 8px; bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.5); color: #fff; display: none; font-size: 14px; padding: 12px 20px; position: fixed; right: 20px; z-index: 9999; }
 
-  /* Header */
-  #header {
-    align-items: flex-end; border-bottom: 1px solid var(--border);
-    display: flex; flex-wrap: wrap; gap: 16px;
-    justify-content: space-between; padding: 36px 24px 24px;
-  }
+  #header { align-items: flex-end; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; padding: 36px 24px 24px; }
   #header h1 { color: var(--gold); font-size: clamp(28px, 5vw, 42px); line-height: 1; }
   #header-sub { color: var(--text-muted); font-size: 12px; letter-spacing: 1px; margin-top: 5px; text-transform: uppercase; }
-  #header-actions { align-items: center; display: flex; gap: 10px; flex-shrink: 0; }
+  #header-actions { align-items: center; display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
 
-  /* Filters */
+  #requests-badge { background: #c06030; border-radius: 10px; color: #fff; font-size: 11px; font-weight: 700; margin-left: 6px; padding: 1px 7px; }
+
   #filters { align-items: center; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 24px; }
   #filters input, #filters select { flex: 1 1 160px; min-width: 130px; }
   #result-count { color: var(--text-dim); font-size: 13px; margin-left: auto; white-space: nowrap; }
 
-  /* Grid */
   #grid { animation: slideUp .4s ease; display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); padding: 24px; }
 
-  /* Book card */
   .book-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,.4); cursor: pointer; overflow: hidden; transition: transform .2s, box-shadow .2s; }
   .book-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.6); transform: translateY(-4px); }
   .book-cover { background: var(--bg3); overflow: hidden; padding-top: 140%; position: relative; width: 100%; }
@@ -97,37 +72,28 @@
   .book-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
   .book-author { color: var(--text-muted); font-size: 11px; margin-bottom: 6px; }
 
-  /* Stars */
   .stars { display: flex; gap: 2px; }
   .star { cursor: default; transition: all .15s; }
   .star.clickable { cursor: pointer; }
   .star svg { display: block; }
 
-  /* Empty state */
   #empty { align-items: center; display: flex; flex-direction: column; padding: 80px 20px; text-align: center; }
   #empty .empty-icon { font-size: 52px; margin-bottom: 16px; }
   #empty h2 { color: #7a7068; font-size: 22px; margin-bottom: 8px; }
   #empty p { color: var(--text-dim); font-size: 14px; }
 
-  /* Spinner */
   .spinner { animation: spin 1s linear infinite; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; height: 32px; margin: 60px auto; width: 32px; }
 
-  /* Views */
   .view { display: none; }
   .view.active { display: block; }
 
-  /* Add / Detail shared */
   .view-inner { margin: 0 auto; max-width: 720px; padding: 32px 24px 80px; }
   .back-btn { font-size: 13px; margin-bottom: 24px; }
   .view-title { color: var(--gold); font-size: 28px; margin-bottom: 28px; }
 
-  /* Add layout */
   #add-layout { display: grid; gap: 32px; grid-template-columns: 180px 1fr; }
   @media (max-width: 520px) { #add-layout { grid-template-columns: 1fr; } }
-  #cover-upload-area {
-    background: var(--bg2); border: 2px dashed var(--border); border-radius: 10px;
-    cursor: pointer; overflow: hidden; padding-top: 140%; position: relative; transition: border .15s;
-  }
+  #cover-upload-area { background: var(--bg2); border: 2px dashed var(--border); border-radius: 10px; cursor: pointer; overflow: hidden; padding-top: 140%; position: relative; transition: border .15s; }
   #cover-upload-area:hover { border-color: var(--gold); }
   #cover-upload-area img { height: 100%; left: 0; object-fit: cover; position: absolute; top: 0; width: 100%; }
   #cover-placeholder { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; left: 0; padding: 16px; position: absolute; text-align: center; top: 0; width: 100%; color: var(--text-dim); }
@@ -139,7 +105,6 @@
   .form-row { display: flex; flex-direction: column; gap: 5px; }
   .form-actions { display: flex; gap: 10px; margin-top: 8px; }
 
-  /* Detail layout */
   #detail-layout { display: grid; gap: 40px; grid-template-columns: 200px 1fr; }
   @media (max-width: 560px) { #detail-layout { grid-template-columns: 1fr; } }
   #detail-cover { border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,.5); overflow: hidden; }
@@ -163,12 +128,43 @@
   .info-box p { color: #c8c0b0; font-size: 15px; line-height: 1.7; }
   .notes-text { color: #a09888; font-size: 14px; font-style: italic; line-height: 1.6; }
   #detail-actions { display: flex; flex-shrink: 0; gap: 8px; margin-top: 4px; }
-  #no-rating-msg { color: var(--text-dim); font-size: 12px; margin-top: 6px; }
+
+  /* Request modal */
+  #request-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
+  #request-modal.open { display: flex; }
+  #request-modal-inner { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; max-width: 400px; padding: 28px; width: 100%; }
+  #request-modal h3 { color: var(--gold); font-size: 20px; margin-bottom: 6px; }
+  #request-modal .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+
+  /* Requests inbox */
+  .request-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; padding: 12px 14px; }
+  .request-item.fulfilled { opacity: .4; }
+  .request-book { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; }
+  .request-who { color: var(--text); font-size: 13px; margin-top: 2px; }
+  .request-date { color: var(--text-dim); font-size: 11px; margin-top: 2px; }
+  .request-btns { display: flex; gap: 6px; flex-shrink: 0; }
+  .requests-empty { color: var(--text-dim); font-size: 15px; padding: 40px 0; text-align: center; }
 </style>
 </head>
 <body>
 
 <div id="toast"></div>
+
+<!-- REQUEST MODAL -->
+<div id="request-modal">
+  <div id="request-modal-inner">
+    <h3>Request to Borrow</h3>
+    <div class="subtitle" id="request-modal-book-title"></div>
+    <div class="form-row" style="margin-bottom:16px">
+      <label class="field-label">Your Name</label>
+      <input type="text" id="request-name-input" placeholder="Enter your name" onkeydown="if(event.key==='Enter')submitRequest()">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="submitRequest()">Send Request</button>
+      <button class="btn btn-ghost" onclick="closeRequestModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- LIBRARY VIEW -->
 <div id="view-library" class="view active">
@@ -179,6 +175,7 @@
     </div>
     <div id="header-actions">
       <button class="btn btn-primary" id="btn-add-book" style="display:none" onclick="showAdd()">+ Add Book</button>
+      <button class="btn btn-ghost" id="btn-requests" style="display:none" onclick="showRequests()">Requests<span id="requests-badge" style="display:none"></span></button>
       <button class="btn btn-ghost" id="btn-owner-login" onclick="ownerLogin()">Owner Login</button>
       <button class="btn btn-ghost" id="btn-owner-logout" style="display:none" onclick="ownerLogout()">Public View</button>
     </div>
@@ -202,6 +199,15 @@
     <div class="empty-icon">📖</div>
     <h2 id="empty-title">Your shelves are empty</h2>
     <p id="empty-sub">Add your first book to get started</p>
+  </div>
+</div>
+
+<!-- REQUESTS VIEW -->
+<div id="view-requests" class="view">
+  <div class="view-inner">
+    <button class="btn btn-ghost back-btn" onclick="showLibrary()">← Back to library</button>
+    <h2 class="view-title">📬 Borrow Requests</h2>
+    <div id="requests-list"></div>
   </div>
 </div>
 
@@ -276,53 +282,39 @@
 </div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
 const SUPABASE_URL = 'https://kdaixtzcppdmqnkoyaiw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_-5kF3Mnd9ub6o0HDwRvBAA_TZkIHTtR';
-const OWNER_CODE = 'books'; // Change this to your preferred password
+const OWNER_CODE = 'books';
 
-// ── State ─────────────────────────────────────────────────────────────────────
 let books = [];
 let currentBook = null;
 let isOwner = localStorage.getItem('lib-owner') === 'true';
 let coverBase64 = null;
-let analyzing = false;
+let pendingRequestCount = 0;
 
-// ── Supabase helpers ──────────────────────────────────────────────────────────
+// ── Supabase ──────────────────────────────────────────────────────────────────
 async function dbFetch(path, opts = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...opts,
     headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation',
+      'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json', 'Prefer': 'return=representation',
       ...(opts.headers || {})
     }
   });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err);
-  }
+  if (!res.ok) throw new Error(await res.text());
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
 
-async function loadBooks() {
-  return dbFetch('books?order=added_at.desc');
-}
-
-async function insertBook(book) {
-  return dbFetch('books', { method: 'POST', body: JSON.stringify(book) });
-}
-
-async function updateBook(id, patch) {
-  return dbFetch(`books?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
-}
-
-async function deleteBook(id) {
-  return dbFetch(`books?id=eq.${id}`, { method: 'DELETE' });
-}
+async function loadBooks() { return dbFetch('books?order=added_at.desc'); }
+async function insertBook(b) { return dbFetch('books', { method: 'POST', body: JSON.stringify(b) }); }
+async function updateBook(id, patch) { return dbFetch(`books?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); }
+async function deleteBook(id) { return dbFetch(`books?id=eq.${id}`, { method: 'DELETE' }); }
+async function loadRequests() { return dbFetch('borrow_requests?order=requested_at.desc'); }
+async function insertRequest(r) { return dbFetch('borrow_requests', { method: 'POST', body: JSON.stringify(r) }); }
+async function updateRequest(id, patch) { return dbFetch(`borrow_requests?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); }
+async function deleteRequest(id) { return dbFetch(`borrow_requests?id=eq.${id}`, { method: 'DELETE' }); }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
@@ -339,13 +331,104 @@ async function refresh() {
     updateStats();
     populateGenreFilter();
     renderGrid(books);
-  } catch(e) {
-    showToast('Could not load books — check your connection', 'error');
-  }
+    if (isOwner) await refreshRequestsBadge();
+  } catch(e) { showToast('Could not load books', 'error'); }
   document.getElementById('loading').style.display = 'none';
 }
 
-// ── UI helpers ─────────────────────────────────────────────────────────────────
+async function refreshRequestsBadge() {
+  try {
+    const reqs = await loadRequests();
+    pendingRequestCount = reqs.filter(r => r.status === 'pending').length;
+    const badge = document.getElementById('requests-badge');
+    if (pendingRequestCount > 0) {
+      badge.textContent = pendingRequestCount;
+      badge.style.display = 'inline';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch {}
+}
+
+// ── Requests ──────────────────────────────────────────────────────────────────
+function openRequestModal(book) {
+  currentBook = book;
+  document.getElementById('request-modal-book-title').textContent = `"${book.title}"`;
+  document.getElementById('request-name-input').value = '';
+  document.getElementById('request-modal').classList.add('open');
+  setTimeout(() => document.getElementById('request-name-input').focus(), 100);
+}
+
+function closeRequestModal() {
+  document.getElementById('request-modal').classList.remove('open');
+}
+
+async function submitRequest() {
+  const name = document.getElementById('request-name-input').value.trim();
+  if (!name) { alert('Please enter your name'); return; }
+  try {
+    await insertRequest({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+      book_id: currentBook.id,
+      book_title: currentBook.title,
+      requester_name: name,
+      requested_at: Date.now(),
+      status: 'pending'
+    });
+    closeRequestModal();
+    showToast('Request sent!');
+  } catch { showToast('Could not send request', 'error'); }
+}
+
+async function showRequests() {
+  showView('view-requests');
+  const list = document.getElementById('requests-list');
+  list.innerHTML = '<div class="spinner"></div>';
+  try {
+    const reqs = await loadRequests();
+    if (reqs.length === 0) {
+      list.innerHTML = '<div class="requests-empty">No requests yet</div>';
+      return;
+    }
+    list.innerHTML = reqs.map(r => `
+      <div class="request-item ${r.status === 'fulfilled' ? 'fulfilled' : ''}" id="req-${r.id}">
+        <div>
+          <div class="request-book">${esc(r.book_title)}</div>
+          <div class="request-who">👤 ${esc(r.requester_name)}</div>
+          <div class="request-date">${new Date(r.requested_at).toLocaleDateString()} · ${r.status}</div>
+        </div>
+        <div class="request-btns">
+          ${r.status === 'pending'
+            ? `<button class="btn btn-primary btn-sm" onclick="fulfillRequest('${r.id}')">Lend it</button>`
+            : `<button class="btn btn-ghost btn-sm" onclick="fulfillRequest('${r.id}')">Undo</button>`
+          }
+          <button class="btn btn-danger btn-sm" onclick="dismissRequest('${r.id}')">✕</button>
+        </div>
+      </div>`).join('');
+  } catch { list.innerHTML = '<div class="requests-empty">Could not load requests</div>'; }
+}
+
+async function fulfillRequest(id) {
+  try {
+    const item = document.querySelector(`#req-${id}`);
+    const isFulfilled = item?.classList.contains('fulfilled');
+    await updateRequest(id, { status: isFulfilled ? 'pending' : 'fulfilled' });
+    await showRequests();
+    await refreshRequestsBadge();
+  } catch { showToast('Update failed', 'error'); }
+}
+
+async function dismissRequest(id) {
+  try {
+    await deleteRequest(id);
+    document.getElementById(`req-${id}`)?.remove();
+    await refreshRequestsBadge();
+    const remaining = document.querySelectorAll('.request-item').length;
+    if (remaining === 0) document.getElementById('requests-list').innerHTML = '<div class="requests-empty">No requests yet</div>';
+  } catch { showToast('Delete failed', 'error'); }
+}
+
+// ── UI ────────────────────────────────────────────────────────────────────────
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -361,9 +444,33 @@ function showView(id) {
 }
 
 function showLibrary() { showView('view-library'); filterBooks(); }
-function showAdd() {
-  resetAddForm();
-  showView('view-add');
+function showAdd() { resetAddForm(); showView('view-add'); }
+
+function updateOwnerUI() {
+  document.getElementById('btn-add-book').style.display = isOwner ? '' : 'none';
+  document.getElementById('btn-requests').style.display = isOwner ? '' : 'none';
+  document.getElementById('btn-owner-login').style.display = isOwner ? 'none' : '';
+  document.getElementById('btn-owner-logout').style.display = isOwner ? '' : 'none';
+}
+
+function ownerLogin() {
+  const code = prompt('Enter owner code:');
+  if (code === OWNER_CODE) {
+    isOwner = true;
+    localStorage.setItem('lib-owner', 'true');
+    updateOwnerUI();
+    refreshRequestsBadge();
+    showToast('Owner mode on!');
+    if (currentBook) showDetail(currentBook);
+  } else if (code !== null) { showToast('Incorrect code', 'error'); }
+}
+
+function ownerLogout() {
+  isOwner = false;
+  localStorage.setItem('lib-owner', 'false');
+  updateOwnerUI();
+  showToast('Switched to public view');
+  if (currentBook) showDetail(currentBook);
 }
 
 function updateStats() {
@@ -375,34 +482,6 @@ function updateStats() {
   document.getElementById('header-sub').textContent = `${total} books · ${read} rated · ${borrowed} out · avg ${avg} ★`;
 }
 
-function updateOwnerUI() {
-  document.getElementById('btn-add-book').style.display = isOwner ? '' : 'none';
-  document.getElementById('btn-owner-login').style.display = isOwner ? 'none' : '';
-  document.getElementById('btn-owner-logout').style.display = isOwner ? '' : 'none';
-}
-
-function ownerLogin() {
-  const code = prompt('Enter owner code:');
-  if (code === OWNER_CODE) {
-    isOwner = true;
-    localStorage.setItem('lib-owner', 'true');
-    updateOwnerUI();
-    showToast('Welcome! Owner mode on.');
-    if (currentBook) showDetail(currentBook);
-  } else if (code !== null) {
-    showToast('Incorrect code', 'error');
-  }
-}
-
-function ownerLogout() {
-  isOwner = false;
-  localStorage.setItem('lib-owner', 'false');
-  updateOwnerUI();
-  showToast('Switched to public view');
-  if (currentBook) showDetail(currentBook);
-}
-
-// ── Genre filter population ───────────────────────────────────────────────────
 function populateGenreFilter() {
   const sel = document.getElementById('filter-genre');
   const current = sel.value;
@@ -411,14 +490,12 @@ function populateGenreFilter() {
   sel.value = current;
 }
 
-// ── Filter ────────────────────────────────────────────────────────────────────
 function filterBooks() {
   const q = document.getElementById('search-input').value.toLowerCase();
   const genre = document.getElementById('filter-genre').value;
   const status = document.getElementById('filter-status').value;
   const hasFilters = q || genre || status;
   document.getElementById('btn-clear-filters').style.display = hasFilters ? '' : 'none';
-
   const filtered = books.filter(b => {
     const matchQ = !q || [b.title, b.author, b.genre, b.notes, b.description].some(s => s?.toLowerCase().includes(q));
     const matchG = !genre || b.genre === genre;
@@ -429,7 +506,6 @@ function filterBooks() {
       (status === 'unrated' && !b.rating);
     return matchQ && matchG && matchS;
   });
-
   renderGrid(filtered, hasFilters);
 }
 
@@ -440,12 +516,11 @@ function clearFilters() {
   filterBooks();
 }
 
-// ── Render grid ───────────────────────────────────────────────────────────────
+// ── Grid ──────────────────────────────────────────────────────────────────────
 function renderGrid(list, filtered = false) {
   const grid = document.getElementById('grid');
   const empty = document.getElementById('empty');
   document.getElementById('result-count').textContent = `${list.length} book${list.length !== 1 ? 's' : ''}`;
-
   if (list.length === 0) {
     grid.style.display = 'none';
     empty.style.display = 'flex';
@@ -453,7 +528,6 @@ function renderGrid(list, filtered = false) {
     document.getElementById('empty-sub').textContent = filtered ? 'Try adjusting your filters' : (isOwner ? 'Add your first book to get started' : 'Nothing here yet');
     return;
   }
-
   grid.style.display = 'grid';
   empty.style.display = 'none';
   grid.innerHTML = list.map((book, i) => bookCardHTML(book, i)).join('');
@@ -463,10 +537,8 @@ function bookCardHTML(book, i) {
   const coverHTML = book.cover_image
     ? `<img src="${book.cover_image}" alt="${esc(book.title)}" loading="lazy">`
     : `<div class="book-cover-placeholder"><div class="icon">📖</div><div class="ptitle">${esc(book.title || '')}</div></div>`;
-
   const badgeHTML = book.borrower ? `<span class="book-badge badge-out">OUT</span>` : '';
   const starsHTML = book.rating > 0 ? starsDisplay(book.rating, 12) : '';
-
   return `
     <div class="book-card" onclick="showDetail(books.find(b=>b.id==='${book.id}'))" style="animation:slideUp .4s ease both;animation-delay:${i*30}ms">
       <div class="book-cover">${coverHTML}${badgeHTML}</div>
@@ -481,53 +553,31 @@ function bookCardHTML(book, i) {
 // ── Stars ─────────────────────────────────────────────────────────────────────
 function starsDisplay(value, size = 20) {
   return `<div class="stars">${[1,2,3,4,5].map(n => `
-    <span class="star">
-      <svg width="${size}" height="${size}" viewBox="0 0 24 24"
-        fill="${value >= n ? '#e8a838' : 'none'}"
-        stroke="${value >= n ? '#e8a838' : '#888'}"
-        stroke-width="1.8">
-        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-      </svg>
-    </span>`).join('')}</div>`;
+    <span class="star"><svg width="${size}" height="${size}" viewBox="0 0 24 24"
+      fill="${value >= n ? '#e8a838' : 'none'}" stroke="${value >= n ? '#e8a838' : '#888'}" stroke-width="1.8">
+      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+    </svg></span>`).join('')}</div>`;
 }
 
-function starsClickable(value, onClickFn, size = 28) {
+function starsClickable(value, size = 28) {
   return `<div class="stars" id="star-row">${[1,2,3,4,5].map(n => `
-    <span class="star clickable"
-      onmouseenter="hoverStars(${n})"
-      onmouseleave="hoverStars(0)"
-      onclick="${onClickFn}(${value === n ? 0 : n})">
+    <span class="star clickable" onclick="setRating(${value === n ? 0 : n})">
       <svg width="${size}" height="${size}" viewBox="0 0 24 24"
-        fill="${value >= n ? '#e8a838' : 'none'}"
-        stroke="${value >= n ? '#e8a838' : '#888'}"
-        stroke-width="1.8" style="transition:all .15s">
+        fill="${value >= n ? '#e8a838' : 'none'}" stroke="${value >= n ? '#e8a838' : '#888'}" stroke-width="1.8" style="transition:all .15s">
         <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-      </svg>
-    </span>`).join('')}</div>`;
+      </svg></span>`).join('')}</div>`;
 }
 
-function hoverStars(n) {
-  document.querySelectorAll('#star-row .star svg').forEach((svg, i) => {
-    const active = n > 0 ? i < n : parseInt(svg.closest('[onclick]')?.getAttribute('onclick')?.match(/\d+/)?.[0] || 0) > i;
-    // just re-color on hover
-    const on = n > 0 && i < n;
-    svg.setAttribute('fill', on ? '#e8a838' : 'none');
-    svg.setAttribute('stroke', on ? '#e8a838' : '#888');
-  });
-}
-
-// ── Detail view ───────────────────────────────────────────────────────────────
+// ── Detail ────────────────────────────────────────────────────────────────────
 function showDetail(book) {
   if (!book) return;
   currentBook = book;
 
-  // Cover
   const coverEl = document.getElementById('detail-cover');
   coverEl.innerHTML = book.cover_image
     ? `<img src="${book.cover_image}" alt="${esc(book.title)}">`
     : `<div id="detail-cover-placeholder"><span>📖</span></div>`;
 
-  // Borrow section (owner only)
   const borrowSection = document.getElementById('borrow-section');
   if (isOwner) {
     borrowSection.style.display = 'block';
@@ -539,22 +589,23 @@ function showDetail(book) {
     borrowSection.style.display = 'none';
   }
 
-  // Main info
   const info = document.getElementById('detail-info');
   const editActions = isOwner ? `
     <div id="detail-actions">
-      <button class="btn btn-ghost" style="font-size:12px" onclick="showEditDetail()">Edit</button>
-      <button class="btn btn-danger" style="font-size:12px" onclick="confirmDelete()">Delete</button>
+      <button class="btn btn-ghost btn-sm" onclick="showEditDetail()">Edit</button>
+      <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete</button>
     </div>` : '';
 
   const ratingSection = `
     <div class="info-box">
       <div class="info-box-title">Rating</div>
-      ${isOwner
-        ? starsClickable(book.rating || 0, 'setRating') + ((!book.rating) ? `<div id="no-rating-msg" style="color:var(--text-dim);font-size:12px;margin-top:6px">Click to rate</div>` : '')
-        : starsDisplay(book.rating || 0, 24)}
-      ${(!isOwner && !book.rating) ? `<p style="color:var(--text-dim);font-size:13px">Not yet rated</p>` : ''}
+      ${isOwner ? starsClickable(book.rating || 0) : starsDisplay(book.rating || 0, 24)}
+      ${(!book.rating) ? `<p style="color:var(--text-dim);font-size:13px;margin-top:6px">${isOwner ? 'Click to rate' : 'Not yet rated'}</p>` : ''}
     </div>`;
+
+  const requestBtn = !isOwner && !book.borrower
+    ? `<button class="btn btn-request" style="margin-bottom:16px;width:100%" onclick="openRequestModal(currentBook)">📩 Request to Borrow</button>`
+    : '';
 
   info.innerHTML = `
     <div>
@@ -567,9 +618,10 @@ function showDetail(book) {
         ${book.genre ? `<span class="genre-tag">${esc(book.genre)}</span>` : ''}
         <span class="added-date">Added ${new Date(book.added_at).toLocaleDateString()}</span>
       </div>
+      ${requestBtn}
       ${ratingSection}
       ${book.description ? `<div class="info-box"><div class="info-box-title">About</div><p>${esc(book.description)}</p></div>` : ''}
-      ${book.notes ? `<div class="info-box"><div class="info-box-title">Personal Notes</div><p class="notes-text">${esc(book.notes)}</p></div>` : ''}
+      ${book.notes && isOwner ? `<div class="info-box"><div class="info-box-title">Personal Notes</div><p class="notes-text">${esc(book.notes)}</p></div>` : ''}
     </div>`;
 
   showView('view-detail');
@@ -614,6 +666,7 @@ async function markBorrowed() {
     const idx = books.findIndex(b => b.id === currentBook.id);
     if (idx > -1) Object.assign(books[idx], patch);
     renderBorrowSection(currentBook);
+    showDetail(currentBook);
     showToast(`Marked as borrowed by ${name}`);
   } catch { showToast('Save failed', 'error'); }
 }
@@ -625,7 +678,7 @@ async function markReturned() {
     Object.assign(currentBook, patch);
     const idx = books.findIndex(b => b.id === currentBook.id);
     if (idx > -1) Object.assign(books[idx], patch);
-    renderBorrowSection(currentBook);
+    showDetail(currentBook);
     showToast('Marked as returned!');
   } catch { showToast('Save failed', 'error'); }
 }
@@ -640,18 +693,15 @@ async function confirmDelete() {
   } catch { showToast('Delete failed', 'error'); }
 }
 
-// ── Edit detail (inline) ──────────────────────────────────────────────────────
 function showEditDetail() {
   const b = currentBook;
   const GENRES = ['Fiction','Non-Fiction','Fantasy','Sci-Fi','Mystery','Thriller','Romance','Historical','Biography','Self-Help','Children','Young Adult','Horror','Literary Fiction','Poetry','Other'];
-  const info = document.getElementById('detail-info');
-  info.innerHTML = `
+  document.getElementById('detail-info').innerHTML = `
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="form-row"><label class="field-label">Title</label><input id="e-title" value="${esc(b.title||'')}"></div>
       <div class="form-row"><label class="field-label">Author</label><input id="e-author" value="${esc(b.author||'')}"></div>
       <div class="form-row"><label class="field-label">Genre</label>
-        <select id="e-genre">${GENRES.map(g=>`<option${g===b.genre?' selected':''}>${g}</option>`).join('')}</select>
-      </div>
+        <select id="e-genre">${GENRES.map(g=>`<option${g===b.genre?' selected':''}>${g}</option>`).join('')}</select></div>
       <div class="form-row"><label class="field-label">Description</label><textarea id="e-desc" rows="4">${esc(b.description||'')}</textarea></div>
       <div class="form-row"><label class="field-label">Notes</label><textarea id="e-notes" rows="2">${esc(b.notes||'')}</textarea></div>
       <div class="form-actions">
@@ -698,24 +748,17 @@ function resetAddForm() {
 async function handleCoverUpload(event) {
   const file = event.target.files?.[0];
   if (!file) return;
-
-  // Resize image before storing
   const dataUrl = await resizeImage(file, 600);
   coverBase64 = dataUrl;
-
   document.getElementById('cover-preview').src = dataUrl;
   document.getElementById('cover-preview').style.display = 'block';
   document.getElementById('cover-placeholder').style.display = 'none';
-
-  // AI identify
   const aiStatus = document.getElementById('ai-status');
   aiStatus.textContent = '⏳ Analyzing cover with AI…';
   aiStatus.className = '';
   document.getElementById('btn-save-book').disabled = true;
-
   try {
-    const base64 = dataUrl.split(',')[1];
-    const info = await identifyBook(base64);
+    const info = await identifyBook(dataUrl.split(',')[1]);
     if (info.title) document.getElementById('add-title').value = info.title;
     if (info.author) document.getElementById('add-author').value = info.author;
     if (info.genre) document.getElementById('add-genre').value = info.genre;
@@ -751,16 +794,12 @@ async function identifyBook(base64) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64 } },
-          { type: 'text', text: `Identify this book cover. Respond ONLY with JSON, no markdown:
+      model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+      messages: [{ role: 'user', content: [
+        { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64 } },
+        { type: 'text', text: `Identify this book cover. Respond ONLY with JSON, no markdown:
 {"title":"","author":"","genre":"one of: Fiction, Non-Fiction, Fantasy, Sci-Fi, Mystery, Thriller, Romance, Historical, Biography, Self-Help, Children, Young Adult, Horror, Literary Fiction, Poetry, Other","description":"2-3 sentence description if you recognize the book, otherwise empty string"}` }
-        ]
-      }]
+      ]}]
     })
   });
   const data = await response.json();
@@ -771,38 +810,25 @@ async function identifyBook(base64) {
 async function saveBook() {
   const title = document.getElementById('add-title').value.trim();
   if (!title) { alert('Please enter a title'); return; }
-
   const btn = document.getElementById('btn-save-book');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
-
+  btn.disabled = true; btn.textContent = 'Saving…';
   const book = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2),
-    title,
-    author: document.getElementById('add-author').value.trim(),
+    title, author: document.getElementById('add-author').value.trim(),
     genre: document.getElementById('add-genre').value,
     description: document.getElementById('add-description').value.trim(),
     notes: document.getElementById('add-notes').value.trim(),
-    cover_image: coverBase64 || null,
-    rating: 0,
-    borrower: null,
-    borrowed_at: null,
-    added_at: Date.now()
+    cover_image: coverBase64 || null, rating: 0, borrower: null, borrowed_at: null, added_at: Date.now()
   };
-
   try {
     await insertBook(book);
     books.unshift(book);
     showLibrary();
-    showToast(`"${title}" added to your library!`);
-  } catch(e) {
-    showToast('Save failed — ' + e.message, 'error');
-  }
-  btn.disabled = false;
-  btn.textContent = 'Add to Library';
+    showToast(`"${title}" added!`);
+  } catch(e) { showToast('Save failed — ' + e.message, 'error'); }
+  btn.disabled = false; btn.textContent = 'Add to Library';
 }
 
-// ── Utility ───────────────────────────────────────────────────────────────────
 function esc(str) {
   if (!str) return '';
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
