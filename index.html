@@ -30,11 +30,7 @@
   .btn-request:hover { background: #4a7a4a20; }
   .btn-sm { font-size: 12px; padding: 6px 12px; }
 
-  input, textarea, select {
-    background: var(--bg2); color: var(--text); border: 1px solid var(--border);
-    border-radius: 6px; font-family: 'Lato', sans-serif; font-size: 14px;
-    outline: none; padding: 10px 12px; transition: border .15s; width: 100%;
-  }
+  input, textarea, select { background: var(--bg2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font-family: 'Lato', sans-serif; font-size: 14px; outline: none; padding: 10px 12px; transition: border .15s; width: 100%; }
   input:focus, textarea:focus, select:focus { border-color: var(--gold); }
   textarea { resize: vertical; }
   select option { background: var(--bg2); }
@@ -61,17 +57,15 @@
   #filters input, #filters select { flex: 1 1 140px; min-width: 120px; }
   #result-count { color: var(--text-dim); font-size: 13px; margin-left: auto; white-space: nowrap; }
 
-  /* Sort bar */
   #sort-bar { align-items: center; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 24px; }
   #sort-bar span { color: var(--text-muted); font-size: 11px; letter-spacing: .8px; text-transform: uppercase; margin-right: 4px; }
   .sort-btn { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); cursor: pointer; font-family: 'Lato', sans-serif; font-size: 12px; padding: 5px 12px; transition: all .15s; }
   .sort-btn:hover { border-color: var(--gold); color: var(--gold); }
   .sort-btn.active { background: var(--gold); border-color: var(--gold); color: var(--bg); font-weight: 700; }
   #drag-toggle { margin-left: auto; }
-  .drag-hint { color: var(--text-dim); font-size: 11px; font-style: italic; }
 
   #grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); padding: 24px; }
-  #grid.drag-mode .book-card { cursor: grab; border: 1px solid var(--border); }
+  #grid.drag-mode .book-card { cursor: grab; }
   #grid.drag-mode .book-card:active { cursor: grabbing; }
   #grid.drag-mode .book-card:hover { transform: none; box-shadow: 0 4px 16px rgba(0,0,0,.4); }
   .book-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,.4); cursor: pointer; overflow: hidden; transition: transform .2s, box-shadow .2s, opacity .15s; }
@@ -90,8 +84,10 @@
   #grid.drag-mode .drag-handle { display: block; }
   .book-info { padding: 10px 12px 12px; }
   .book-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
-  .book-author { color: var(--text-muted); font-size: 11px; margin-bottom: 6px; }
+  .book-author { color: var(--text-muted); font-size: 11px; margin-bottom: 4px; }
+  .book-series-tag { color: #a080c0; font-size: 10px; margin-bottom: 4px; font-style: italic; }
   .tbr-tag { background: #1a3a5a; border-radius: 20px; color: #90c0ff; font-size: 12px; letter-spacing: .5px; padding: 4px 12px; }
+  .series-tag-detail { background: #2a1a3a; border-radius: 20px; color: #c090f0; font-size: 12px; letter-spacing: .5px; padding: 4px 12px; }
 
   .stars { display: flex; gap: 2px; }
   .star { cursor: default; }
@@ -124,6 +120,8 @@
   .form-fields { display: flex; flex-direction: column; gap: 14px; }
   .form-row { display: flex; flex-direction: column; gap: 5px; }
   .form-actions { display: flex; gap: 10px; margin-top: 8px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 400px) { .form-row-2 { grid-template-columns: 1fr; } }
 
   #detail-layout { display: grid; gap: 40px; grid-template-columns: 200px 1fr; }
   @media (max-width: 560px) { #detail-layout { grid-template-columns: 1fr; } }
@@ -148,6 +146,35 @@
   .info-box p { color: #c8c0b0; font-size: 15px; line-height: 1.7; }
   .notes-text { color: #a09888; font-size: 14px; font-style: italic; line-height: 1.6; }
   #detail-actions { display: flex; flex-shrink: 0; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+
+  /* Series in detail */
+  .series-book-row { align-items: center; border-radius: 8px; cursor: pointer; display: flex; gap: 12px; padding: 10px; transition: background .15s; }
+  .series-book-row:hover { background: var(--bg3); }
+  .series-book-row.current { background: #2a2010; border: 1px solid #4a3820; }
+  .series-num { background: var(--bg3); border-radius: 50%; color: var(--gold); flex-shrink: 0; font-size: 12px; font-weight: 700; height: 28px; line-height: 28px; text-align: center; width: 28px; }
+  .series-num.current { background: var(--gold); color: var(--bg); }
+  .series-book-cover { border-radius: 4px; flex-shrink: 0; height: 48px; object-fit: cover; width: 32px; background: var(--bg3); }
+  .series-book-info { flex: 1; min-width: 0; }
+  .series-book-title { color: var(--text); font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .series-book-meta { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+  .series-tbr-dot { background: #1a3a5a; border-radius: 3px; color: #90c0ff; font-size: 10px; padding: 2px 6px; margin-left: 6px; }
+
+  /* Series tab */
+  #tab-series { padding: 24px; max-width: 900px; margin: 0 auto; }
+  .series-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; margin-bottom: 16px; overflow: hidden; transition: box-shadow .2s, transform .2s; animation: slideUp .3s ease both; }
+  .series-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.5); transform: translateY(-2px); }
+  .series-card-header { align-items: center; display: flex; justify-content: space-between; padding: 16px 20px 12px; border-bottom: 1px solid var(--border); }
+  .series-card-header.open { border-bottom-color: var(--border); }
+  .series-name { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .series-count { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+  .series-chevron { color: var(--text-dim); font-size: 18px; transition: transform .2s; }
+  .series-chevron.open { transform: rotate(180deg); }
+  .series-books-list { display: none; padding: 8px 12px 12px; }
+  .series-books-list.open { display: block; }
+  .series-covers-row { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; }
+  .series-cover-thumb { border-radius: 4px; flex-shrink: 0; height: 60px; object-fit: cover; width: 40px; background: var(--bg3); }
+  .series-cover-thumb-placeholder { align-items: center; background: var(--bg3); border-radius: 4px; display: flex; flex-shrink: 0; font-size: 16px; height: 60px; justify-content: center; width: 40px; }
+  .series-standalone { color: var(--text-muted); font-size: 13px; font-style: italic; margin-top: 8px; }
 
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
@@ -217,9 +244,11 @@
     <button class="nav-tab active" onclick="switchTab('all')">All Books</button>
     <button class="nav-tab" onclick="switchTab('read')">Read</button>
     <button class="nav-tab" onclick="switchTab('tbr')">TBR</button>
-    <button class="nav-tab" onclick="switchTab('recs')">💌 Recommendations</button>
+    <button class="nav-tab" onclick="switchTab('series')">📚 Series</button>
+    <button class="nav-tab" onclick="switchTab('recs')">💌 Recs</button>
   </div>
 
+  <!-- Books tab -->
   <div id="tab-books">
     <div id="filters">
       <input type="text" id="search-input" placeholder="Search title, author, genre…" oninput="filterBooks()">
@@ -234,7 +263,6 @@
       <button class="btn btn-ghost" id="btn-clear-filters" onclick="clearFilters()" style="display:none;font-size:12px">Clear</button>
       <span id="result-count"></span>
     </div>
-
     <div id="sort-bar">
       <span>Sort:</span>
       <button class="sort-btn active" onclick="setSort('custom')" id="sort-custom">My Order</button>
@@ -245,10 +273,9 @@
       <button class="sort-btn" onclick="setSort('genre')" id="sort-genre">Genre</button>
       <button class="btn btn-ghost btn-sm" id="drag-toggle" style="display:none" onclick="toggleDragMode()">✥ Rearrange</button>
     </div>
-    <div id="drag-hint-bar" style="display:none; padding: 8px 24px; background: #1a2a1a; border-bottom: 1px solid #2a4a2a;">
-      <span class="drag-hint">✥ Drag books to reorder — changes save automatically. <button onclick="toggleDragMode()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;text-decoration:underline">Done rearranging</button></span>
+    <div id="drag-hint-bar" style="display:none;padding:8px 24px;background:#1a2a1a;border-bottom:1px solid #2a4a2a;">
+      <span style="color:var(--text-dim);font-size:11px;font-style:italic">✥ Drag books to reorder — saves automatically. <button onclick="toggleDragMode()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;text-decoration:underline">Done</button></span>
     </div>
-
     <div id="loading" class="spinner"></div>
     <div id="grid" style="display:none"></div>
     <div id="empty" style="display:none">
@@ -258,6 +285,12 @@
     </div>
   </div>
 
+  <!-- Series tab -->
+  <div id="tab-series" style="display:none">
+    <div id="series-content"></div>
+  </div>
+
+  <!-- Recs tab -->
   <div id="tab-recs" style="display:none">
     <div id="recs-section">
       <h2>💌 Book Recommendations</h2>
@@ -265,23 +298,11 @@
       <div id="rec-form">
         <h3>Recommend a Book</h3>
         <div class="form-grid">
-          <div class="form-row">
-            <label class="field-label">Book Title *</label>
-            <input type="text" id="rec-title" placeholder="Title">
-          </div>
-          <div class="form-row">
-            <label class="field-label">Author</label>
-            <input type="text" id="rec-author" placeholder="Author">
-          </div>
+          <div class="form-row"><label class="field-label">Book Title *</label><input type="text" id="rec-title" placeholder="Title"></div>
+          <div class="form-row"><label class="field-label">Author</label><input type="text" id="rec-author" placeholder="Author"></div>
         </div>
-        <div class="form-row" style="margin-top:12px">
-          <label class="field-label">Why you'd love it</label>
-          <textarea id="rec-note" rows="2" placeholder="Tell them why this book is perfect for them…"></textarea>
-        </div>
-        <div class="form-row" style="margin-top:12px">
-          <label class="field-label">Your Name</label>
-          <input type="text" id="rec-name" placeholder="Your name">
-        </div>
+        <div class="form-row" style="margin-top:12px"><label class="field-label">Why you'd love it</label><textarea id="rec-note" rows="2" placeholder="Tell them why this book is perfect for them…"></textarea></div>
+        <div class="form-row" style="margin-top:12px"><label class="field-label">Your Name</label><input type="text" id="rec-name" placeholder="Your name"></div>
         <button class="btn btn-primary" style="margin-top:16px" onclick="submitRec()">Submit Recommendation</button>
       </div>
       <div id="recs-list"></div>
@@ -307,10 +328,7 @@
       <div>
         <div id="cover-upload-area" onclick="document.getElementById('cover-file').click()">
           <img id="cover-preview" src="" alt="" style="display:none">
-          <div id="cover-placeholder">
-            <div class="icon">📷</div>
-            <p>Tap to take photo or upload cover</p>
-          </div>
+          <div id="cover-placeholder"><div class="icon">📷</div><p>Tap to take photo or upload cover</p></div>
         </div>
         <input type="file" id="cover-file" accept="image/*" capture="environment" style="display:none" onchange="handleCoverUpload(event)">
         <div id="ai-status"></div>
@@ -320,16 +338,17 @@
         <div class="form-row"><label class="field-label">Author</label><input type="text" id="add-author" placeholder="Author name"></div>
         <div class="form-row"><label class="field-label">Genre</label>
           <select id="add-genre">
-            <option>Fiction</option><option>Non-Fiction</option><option>Fantasy</option>
-            <option>Sci-Fi</option><option>Mystery</option><option>Thriller</option>
-            <option>Romance</option><option>Historical</option><option>Biography</option>
-            <option>Self-Help</option><option>Children</option><option>Young Adult</option>
-            <option>Horror</option><option>Literary Fiction</option><option>Poetry</option>
-            <option>Romantasy</option><option>Other</option>
+            <option>Fiction</option><option>Non-Fiction</option><option>Fantasy</option><option>Sci-Fi</option><option>Mystery</option><option>Thriller</option><option>Romance</option><option>Historical</option><option>Biography</option><option>Self-Help</option><option>Children</option><option>Young Adult</option><option>Horror</option><option>Literary Fiction</option><option>Poetry</option><option>Romantasy</option><option>Other</option>
           </select>
         </div>
         <div class="form-row"><label class="field-label">Reading Status</label>
           <select id="add-status"><option value="read">Read</option><option value="tbr">To Be Read (TBR)</option></select>
+        </div>
+        <div class="form-row"><label class="field-label">Part of a Series?</label>
+          <input type="text" id="add-series-name" placeholder="Series name (e.g. Wheel of Time)">
+        </div>
+        <div class="form-row"><label class="field-label">Book # in Series</label>
+          <input type="number" id="add-series-order" placeholder="e.g. 1, 2, 3" min="0" step="0.5">
         </div>
         <div class="form-row"><label class="field-label">Description</label><textarea id="add-description" rows="3" placeholder="Brief description…"></textarea></div>
         <div class="form-row"><label class="field-label">Personal Notes</label><textarea id="add-notes" rows="2" placeholder="Your thoughts, shelf location, etc…"></textarea></div>
@@ -374,14 +393,10 @@ let dragMode = false;
 let dragSrcId = null;
 
 // ── Supabase ──────────────────────────────────────────────────────────────────
-async function dbFetch(path, opts = {}) {
+async function dbFetch(path, opts={}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...opts,
-    headers: {
-      'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json', 'Prefer': 'return=representation',
-      ...(opts.headers || {})
-    }
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation', ...(opts.headers||{}) }
   });
   if (!res.ok) throw new Error(await res.text());
   const text = await res.text();
@@ -389,16 +404,16 @@ async function dbFetch(path, opts = {}) {
 }
 
 async function loadBooks() { return dbFetch('books?order=sort_order.asc,added_at.desc'); }
-async function insertBook(b) { return dbFetch('books', { method: 'POST', body: JSON.stringify(b) }); }
-async function updateBook(id, patch) { return dbFetch(`books?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); }
-async function deleteBook(id) { return dbFetch(`books?id=eq.${id}`, { method: 'DELETE' }); }
+async function insertBook(b) { return dbFetch('books', {method:'POST',body:JSON.stringify(b)}); }
+async function updateBook(id, patch) { return dbFetch(`books?id=eq.${id}`, {method:'PATCH',body:JSON.stringify(patch)}); }
+async function deleteBook(id) { return dbFetch(`books?id=eq.${id}`, {method:'DELETE'}); }
 async function loadRequests() { return dbFetch('borrow_requests?order=requested_at.desc'); }
-async function insertRequest(r) { return dbFetch('borrow_requests', { method: 'POST', body: JSON.stringify(r) }); }
-async function updateRequest(id, patch) { return dbFetch(`borrow_requests?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); }
-async function deleteRequest(id) { return dbFetch(`borrow_requests?id=eq.${id}`, { method: 'DELETE' }); }
+async function insertRequest(r) { return dbFetch('borrow_requests', {method:'POST',body:JSON.stringify(r)}); }
+async function updateRequest(id, patch) { return dbFetch(`borrow_requests?id=eq.${id}`, {method:'PATCH',body:JSON.stringify(patch)}); }
+async function deleteRequest(id) { return dbFetch(`borrow_requests?id=eq.${id}`, {method:'DELETE'}); }
 async function loadRecs() { return dbFetch('recommendations?order=recommended_at.desc'); }
-async function insertRec(r) { return dbFetch('recommendations', { method: 'POST', body: JSON.stringify(r) }); }
-async function deleteRec(id) { return dbFetch(`recommendations?id=eq.${id}`, { method: 'DELETE' }); }
+async function insertRec(r) { return dbFetch('recommendations', {method:'POST',body:JSON.stringify(r)}); }
+async function deleteRec(id) { return dbFetch(`recommendations?id=eq.${id}`, {method:'DELETE'}); }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
@@ -424,7 +439,7 @@ async function refresh() {
 async function refreshRequestsBadge() {
   try {
     const reqs = await loadRequests();
-    const count = reqs.filter(r => r.status === 'pending').length;
+    const count = reqs.filter(r => r.status==='pending').length;
     const badge = document.getElementById('requests-badge');
     badge.textContent = count;
     badge.style.display = count > 0 ? 'inline' : 'none';
@@ -432,33 +447,31 @@ async function refreshRequestsBadge() {
 }
 
 // ── Sort ──────────────────────────────────────────────────────────────────────
-function setSort(key, doFilter = true) {
+function setSort(key, doFilter=true) {
   currentSort = key;
   localStorage.setItem('lib-sort', key);
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.getElementById(`sort-${key}`);
-  if (btn) btn.classList.add('active');
-  // Drag mode only available with custom sort
+  document.getElementById(`sort-${key}`)?.classList.add('active');
   const dragToggle = document.getElementById('drag-toggle');
-  if (dragToggle) dragToggle.style.display = (key === 'custom' && isOwner) ? '' : 'none';
+  if (dragToggle) dragToggle.style.display = (key==='custom' && isOwner) ? '' : 'none';
   if (key !== 'custom' && dragMode) toggleDragMode();
   if (doFilter) filterBooks();
 }
 
 function sortBooks(list) {
-  const sorted = [...list];
-  switch (currentSort) {
-    case 'custom':  return sorted.sort((a, b) => (a.sort_order ?? 9999) - (b.sort_order ?? 9999) || b.added_at - a.added_at);
-    case 'recent':  return sorted.sort((a, b) => b.added_at - a.added_at);
-    case 'title':   return sorted.sort((a, b) => (a.title||'').localeCompare(b.title||''));
-    case 'author':  return sorted.sort((a, b) => (a.author||'').localeCompare(b.author||''));
-    case 'rating':  return sorted.sort((a, b) => (b.rating||0) - (a.rating||0));
-    case 'genre':   return sorted.sort((a, b) => (a.genre||'').localeCompare(b.genre||''));
-    default:        return sorted;
+  const s = [...list];
+  switch(currentSort) {
+    case 'custom':  return s.sort((a,b) => (a.sort_order??9999)-(b.sort_order??9999) || b.added_at-a.added_at);
+    case 'recent':  return s.sort((a,b) => b.added_at-a.added_at);
+    case 'title':   return s.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+    case 'author':  return s.sort((a,b) => (a.author||'').localeCompare(b.author||''));
+    case 'rating':  return s.sort((a,b) => (b.rating||0)-(a.rating||0));
+    case 'genre':   return s.sort((a,b) => (a.genre||'').localeCompare(b.genre||''));
+    default:        return s;
   }
 }
 
-// ── Drag to reorder ───────────────────────────────────────────────────────────
+// ── Drag ──────────────────────────────────────────────────────────────────────
 function toggleDragMode() {
   dragMode = !dragMode;
   const grid = document.getElementById('grid');
@@ -469,68 +482,122 @@ function toggleDragMode() {
   btn.textContent = dragMode ? '✓ Done' : '✥ Rearrange';
   btn.classList.toggle('btn-primary', dragMode);
   btn.classList.toggle('btn-ghost', !dragMode);
-  // Re-render to add/remove drag handlers
   filterBooks();
 }
 
 function setupDrag(el, bookId) {
   el.setAttribute('draggable', 'true');
-  el.addEventListener('dragstart', e => {
-    dragSrcId = bookId;
-    el.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-  });
+  el.addEventListener('dragstart', e => { dragSrcId = bookId; el.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
   el.addEventListener('dragend', () => el.classList.remove('dragging'));
   el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
   el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
   el.addEventListener('drop', async e => {
-    e.preventDefault();
-    el.classList.remove('drag-over');
+    e.preventDefault(); el.classList.remove('drag-over');
     if (dragSrcId === bookId) return;
-    // Reorder in local array
-    const srcIdx = books.findIndex(b => b.id === dragSrcId);
-    const dstIdx = books.findIndex(b => b.id === bookId);
-    if (srcIdx === -1 || dstIdx === -1) return;
-    const [moved] = books.splice(srcIdx, 1);
-    books.splice(dstIdx, 0, moved);
-    // Assign new sort_order values and save
-    const updates = books.map((b, i) => ({ id: b.id, sort_order: i }));
-    books.forEach((b, i) => b.sort_order = i);
+    const srcIdx = books.findIndex(b=>b.id===dragSrcId);
+    const dstIdx = books.findIndex(b=>b.id===bookId);
+    if (srcIdx===-1||dstIdx===-1) return;
+    const [moved] = books.splice(srcIdx,1);
+    books.splice(dstIdx,0,moved);
+    books.forEach((b,i) => b.sort_order=i);
     filterBooks();
-    // Save to DB (fire and forget, show toast on error)
-    try {
-      await Promise.all(updates.map(u => updateBook(u.id, { sort_order: u.sort_order })));
-    } catch { showToast('Could not save order', 'error'); }
-  });
-  // Touch drag for mobile
-  let touchStartY, touchStartX;
-  el.addEventListener('touchstart', e => {
-    touchStartY = e.touches[0].clientY;
-    touchStartX = e.touches[0].clientX;
-    dragSrcId = bookId;
-  }, { passive: true });
-  el.addEventListener('touchend', e => {
-    const touch = e.changedTouches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.book-card');
-    if (target && target.dataset.id && target.dataset.id !== dragSrcId) {
-      const fakeEl = { classList: { remove: () => {} } };
-      target.dispatchEvent(new DragEvent('drop', { bubbles: true }));
-    }
+    try { await Promise.all(books.map((b,i) => updateBook(b.id,{sort_order:i}))); }
+    catch { showToast('Could not save order','error'); }
   });
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 function switchTab(tab) {
   currentTab = tab;
-  document.querySelectorAll('.nav-tab').forEach((t, i) => {
-    t.classList.toggle('active', ['all','read','tbr','recs'][i] === tab);
-  });
-  document.getElementById('tab-books').style.display = tab === 'recs' ? 'none' : 'block';
-  document.getElementById('tab-recs').style.display = tab === 'recs' ? 'block' : 'none';
-  if (tab === 'recs') { loadRecsTab(); return; }
+  const tabNames = ['all','read','tbr','series','recs'];
+  document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active', tabNames[i]===tab));
+  document.getElementById('tab-books').style.display = ['all','read','tbr'].includes(tab) ? 'block' : 'none';
+  document.getElementById('tab-series').style.display = tab==='series' ? 'block' : 'none';
+  document.getElementById('tab-recs').style.display = tab==='recs' ? 'block' : 'none';
+  if (tab==='recs') { loadRecsTab(); return; }
+  if (tab==='series') { renderSeriesTab(); return; }
   filterBooks();
 }
 
+// ── Series Tab ────────────────────────────────────────────────────────────────
+function renderSeriesTab() {
+  const container = document.getElementById('series-content');
+
+  // Group books by series
+  const seriesMap = {};
+  const standalone = [];
+  books.forEach(b => {
+    if (b.series_name) {
+      if (!seriesMap[b.series_name]) seriesMap[b.series_name] = [];
+      seriesMap[b.series_name].push(b);
+    } else {
+      standalone.push(b);
+    }
+  });
+
+  // Sort each series by order
+  Object.values(seriesMap).forEach(arr => arr.sort((a,b) => (a.series_order??999)-(b.series_order??999)));
+
+  const seriesNames = Object.keys(seriesMap).sort();
+
+  if (!seriesNames.length) {
+    container.innerHTML = `<div style="text-align:center;padding:80px 20px;color:var(--text-dim)"><div style="font-size:48px;margin-bottom:16px">📚</div><p style="font-size:16px;color:#7a7068">No series tagged yet</p><p style="font-size:13px;margin-top:8px">Add a series name when adding or editing a book</p></div>`;
+    return;
+  }
+
+  container.innerHTML = seriesNames.map((name, si) => {
+    const seriesBooks = seriesMap[name];
+    const readCount = seriesBooks.filter(b => !b.tbr).length;
+    const total = seriesBooks.length;
+
+    const coversHTML = seriesBooks.map(b =>
+      b.cover_image
+        ? `<img class="series-cover-thumb" src="${b.cover_image}" alt="${esc(b.title)}" title="${esc(b.title)}">`
+        : `<div class="series-cover-thumb-placeholder" title="${esc(b.title)}">📖</div>`
+    ).join('');
+
+    const booksListHTML = seriesBooks.map(b => `
+      <div class="series-book-row" onclick="openSeriesBook('${b.id}')">
+        <div class="series-num ${!b.tbr && b.series_order ? '' : ''}">${b.series_order ?? '?'}</div>
+        ${b.cover_image ? `<img class="series-book-cover" src="${b.cover_image}" alt="">` : `<div class="series-book-cover" style="display:flex;align-items:center;justify-content:center;font-size:16px">📖</div>`}
+        <div class="series-book-info">
+          <div class="series-book-title">${esc(b.title)}</div>
+          <div class="series-book-meta">
+            ${b.author ? esc(b.author) : ''}
+            ${b.tbr ? '<span class="series-tbr-dot">TBR</span>' : ''}
+            ${b.rating > 0 ? `· ${'★'.repeat(b.rating)}` : ''}
+          </div>
+        </div>
+      </div>`).join('');
+
+    return `
+      <div class="series-card" style="animation-delay:${si*60}ms" id="series-card-${si}">
+        <div class="series-card-header" onclick="toggleSeries(${si})">
+          <div>
+            <div class="series-name">${esc(name)}</div>
+            <div class="series-count">${total} book${total!==1?'s':''} · ${readCount} read${readCount<total?' · '+(total-readCount)+' TBR':''}</div>
+          </div>
+          <span class="series-chevron" id="chevron-${si}">▾</span>
+        </div>
+        <div class="series-covers-row">${coversHTML}</div>
+        <div class="series-books-list" id="series-list-${si}">${booksListHTML}</div>
+      </div>`;
+  }).join('');
+}
+
+function toggleSeries(idx) {
+  const list = document.getElementById(`series-list-${idx}`);
+  const chevron = document.getElementById(`chevron-${idx}`);
+  const isOpen = list.classList.toggle('open');
+  chevron.classList.toggle('open', isOpen);
+}
+
+function openSeriesBook(id) {
+  const book = books.find(b => b.id === id);
+  if (book) showDetail(book);
+}
+
+// ── Recs ──────────────────────────────────────────────────────────────────────
 async function loadRecsTab() {
   const list = document.getElementById('recs-list');
   list.innerHTML = '<div class="spinner"></div>';
@@ -541,15 +608,15 @@ async function loadRecsTab() {
 function renderRecs(recs) {
   const list = document.getElementById('recs-list');
   if (!recs.length) { list.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px 0">No recommendations yet — be the first!</p>'; return; }
-  list.innerHTML = recs.map((r, i) => `
+  list.innerHTML = recs.map((r,i) => `
     <div class="rec-card" style="animation-delay:${i*40}ms" id="rec-${r.id}">
       <div>
         <div class="rec-title">${esc(r.book_title)}</div>
-        ${r.author ? `<div class="rec-author">by ${esc(r.author)}</div>` : ''}
-        ${r.note ? `<div class="rec-note">"${esc(r.note)}"</div>` : ''}
+        ${r.author?`<div class="rec-author">by ${esc(r.author)}</div>`:''}
+        ${r.note?`<div class="rec-note">"${esc(r.note)}"</div>`:''}
         <div class="rec-by">— ${esc(r.recommender_name||'Anonymous')} · ${new Date(r.recommended_at).toLocaleDateString()}</div>
       </div>
-      ${isOwner ? `<button class="rec-delete" onclick="removeRec('${r.id}')">✕</button>` : ''}
+      ${isOwner?`<button class="rec-delete" onclick="removeRec('${r.id}')">✕</button>`:''}
     </div>`).join('');
 }
 
@@ -557,11 +624,11 @@ async function submitRec() {
   const title = document.getElementById('rec-title').value.trim();
   if (!title) { alert('Please enter a book title'); return; }
   try {
-    await insertRec({ id: Date.now().toString(36)+Math.random().toString(36).slice(2), book_title: title, author: document.getElementById('rec-author').value.trim(), note: document.getElementById('rec-note').value.trim(), recommender_name: document.getElementById('rec-name').value.trim()||'Anonymous', recommended_at: Date.now() });
-    ['rec-title','rec-author','rec-note','rec-name'].forEach(id => document.getElementById(id).value = '');
+    await insertRec({id:Date.now().toString(36)+Math.random().toString(36).slice(2),book_title:title,author:document.getElementById('rec-author').value.trim(),note:document.getElementById('rec-note').value.trim(),recommender_name:document.getElementById('rec-name').value.trim()||'Anonymous',recommended_at:Date.now()});
+    ['rec-title','rec-author','rec-note','rec-name'].forEach(id=>document.getElementById(id).value='');
     showToast('Recommendation submitted!');
     loadRecsTab();
-  } catch { showToast('Could not submit', 'error'); }
+  } catch { showToast('Could not submit','error'); }
 }
 
 async function removeRec(id) {
@@ -570,7 +637,7 @@ async function removeRec(id) {
     document.getElementById(`rec-${id}`)?.remove();
     if (!document.querySelectorAll('.rec-card').length) document.getElementById('recs-list').innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px 0">No recommendations yet — be the first!</p>';
     showToast('Removed');
-  } catch { showToast('Delete failed', 'error'); }
+  } catch { showToast('Delete failed','error'); }
 }
 
 // ── Requests ──────────────────────────────────────────────────────────────────
@@ -579,7 +646,7 @@ function openRequestModal(book) {
   document.getElementById('request-modal-book-title').textContent = `"${book.title}"`;
   document.getElementById('request-name-input').value = '';
   document.getElementById('request-modal').classList.add('open');
-  setTimeout(() => document.getElementById('request-name-input').focus(), 100);
+  setTimeout(()=>document.getElementById('request-name-input').focus(),100);
 }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
@@ -587,10 +654,10 @@ async function submitRequest() {
   const name = document.getElementById('request-name-input').value.trim();
   if (!name) { alert('Please enter your name'); return; }
   try {
-    await insertRequest({ id: Date.now().toString(36)+Math.random().toString(36).slice(2), book_id: currentBook.id, book_title: currentBook.title, requester_name: name, requested_at: Date.now(), status: 'pending' });
+    await insertRequest({id:Date.now().toString(36)+Math.random().toString(36).slice(2),book_id:currentBook.id,book_title:currentBook.title,requester_name:name,requested_at:Date.now(),status:'pending'});
     closeModal('request-modal');
     showToast('Request sent!');
-  } catch { showToast('Could not send request', 'error'); }
+  } catch { showToast('Could not send request','error'); }
 }
 
 async function showRequests() {
@@ -600,7 +667,7 @@ async function showRequests() {
   try {
     const reqs = await loadRequests();
     if (!reqs.length) { list.innerHTML = '<div class="inbox-empty">No requests yet</div>'; return; }
-    list.innerHTML = reqs.map(r => `
+    list.innerHTML = reqs.map(r=>`
       <div class="request-item ${r.status==='fulfilled'?'fulfilled':''}" id="req-${r.id}">
         <div>
           <div class="request-book">${esc(r.book_title)}</div>
@@ -608,7 +675,7 @@ async function showRequests() {
           <div class="request-date">${new Date(r.requested_at).toLocaleDateString()} · ${r.status}</div>
         </div>
         <div class="request-btns">
-          ${r.status==='pending' ? `<button class="btn btn-primary btn-sm" onclick="fulfillRequest('${r.id}')">Lend it</button>` : `<button class="btn btn-ghost btn-sm" onclick="fulfillRequest('${r.id}')">Undo</button>`}
+          ${r.status==='pending'?`<button class="btn btn-primary btn-sm" onclick="fulfillRequest('${r.id}')">Lend it</button>`:`<button class="btn btn-ghost btn-sm" onclick="fulfillRequest('${r.id}')">Undo</button>`}
           <button class="btn btn-danger btn-sm" onclick="dismissRequest('${r.id}')">✕</button>
         </div>
       </div>`).join('');
@@ -618,9 +685,9 @@ async function showRequests() {
 async function fulfillRequest(id) {
   try {
     const item = document.querySelector(`#req-${id}`);
-    await updateRequest(id, { status: item?.classList.contains('fulfilled') ? 'pending' : 'fulfilled' });
+    await updateRequest(id,{status:item?.classList.contains('fulfilled')?'pending':'fulfilled'});
     await showRequests(); await refreshRequestsBadge();
-  } catch { showToast('Update failed', 'error'); }
+  } catch { showToast('Update failed','error'); }
 }
 
 async function dismissRequest(id) {
@@ -628,166 +695,182 @@ async function dismissRequest(id) {
     await deleteRequest(id);
     document.getElementById(`req-${id}`)?.remove();
     await refreshRequestsBadge();
-    if (!document.querySelectorAll('.request-item').length) document.getElementById('requests-list').innerHTML = '<div class="inbox-empty">No requests yet</div>';
-  } catch { showToast('Delete failed', 'error'); }
+    if (!document.querySelectorAll('.request-item').length) document.getElementById('requests-list').innerHTML='<div class="inbox-empty">No requests yet</div>';
+  } catch { showToast('Delete failed','error'); }
 }
 
-// ── UI helpers ────────────────────────────────────────────────────────────────
-function showToast(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = type==='error' ? '#7a2020' : '#2a4a2a';
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
+// ── UI ────────────────────────────────────────────────────────────────────────
+function showToast(msg,type='success') {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.background=type==='error'?'#7a2020':'#2a4a2a';
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
 }
 function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 function showLibrary() { showView('view-library'); filterBooks(); }
 function showAdd() { resetAddForm(); showView('view-add'); }
 
 function updateOwnerUI() {
-  document.getElementById('btn-add-book').style.display = isOwner ? '' : 'none';
-  document.getElementById('btn-requests').style.display = isOwner ? '' : 'none';
-  document.getElementById('btn-owner-login').style.display = isOwner ? 'none' : '';
-  document.getElementById('btn-owner-logout').style.display = isOwner ? '' : 'none';
-  const dragToggle = document.getElementById('drag-toggle');
-  if (dragToggle) dragToggle.style.display = (isOwner && currentSort === 'custom') ? '' : 'none';
+  document.getElementById('btn-add-book').style.display = isOwner?'':'none';
+  document.getElementById('btn-requests').style.display = isOwner?'':'none';
+  document.getElementById('btn-owner-login').style.display = isOwner?'none':'';
+  document.getElementById('btn-owner-logout').style.display = isOwner?'':'none';
+  const dt = document.getElementById('drag-toggle');
+  if (dt) dt.style.display = (isOwner&&currentSort==='custom')?'':'none';
 }
 
 function ownerLogin() {
   const code = prompt('Enter owner code:');
-  if (code === OWNER_CODE) {
-    isOwner = true; localStorage.setItem('lib-owner', 'true');
+  if (code===OWNER_CODE) {
+    isOwner=true; localStorage.setItem('lib-owner','true');
     updateOwnerUI(); refreshRequestsBadge();
     showToast('Owner mode on!');
     if (currentBook) showDetail(currentBook);
-    if (currentTab === 'recs') loadRecsTab();
-  } else if (code !== null) { showToast('Incorrect code', 'error'); }
+    if (currentTab==='recs') loadRecsTab();
+    if (currentTab==='series') renderSeriesTab();
+  } else if (code!==null) { showToast('Incorrect code','error'); }
 }
 function ownerLogout() {
-  isOwner = false; localStorage.setItem('lib-owner', 'false');
+  isOwner=false; localStorage.setItem('lib-owner','false');
   if (dragMode) toggleDragMode();
   updateOwnerUI(); showToast('Switched to public view');
   if (currentBook) showDetail(currentBook);
-  if (currentTab === 'recs') loadRecsTab();
+  if (currentTab==='recs') loadRecsTab();
+  if (currentTab==='series') renderSeriesTab();
 }
 
 function updateStats() {
-  const total = books.length, read = books.filter(b => !b.tbr).length, tbr = books.filter(b => b.tbr).length;
-  const rated = books.filter(b => b.rating > 0);
-  const avg = rated.length ? (rated.reduce((s,b) => s+b.rating, 0)/rated.length).toFixed(1) : '—';
-  document.getElementById('header-sub').textContent = `${total} books · ${read} read · ${tbr} TBR · avg ${avg} ★`;
+  const total=books.length, read=books.filter(b=>!b.tbr).length, tbr=books.filter(b=>b.tbr).length;
+  const seriesCount = new Set(books.filter(b=>b.series_name).map(b=>b.series_name)).size;
+  const rated=books.filter(b=>b.rating>0);
+  const avg=rated.length?(rated.reduce((s,b)=>s+b.rating,0)/rated.length).toFixed(1):'—';
+  document.getElementById('header-sub').textContent=`${total} books · ${read} read · ${tbr} TBR · ${seriesCount} series · avg ${avg} ★`;
 }
 
 function populateGenreFilter() {
-  const sel = document.getElementById('filter-genre'), current = sel.value;
-  const genres = [...new Set(books.map(b => b.genre).filter(Boolean))].sort();
-  sel.innerHTML = '<option value="">All Genres</option>' + genres.map(g => `<option value="${g}">${g}</option>`).join('');
-  sel.value = current;
+  const sel=document.getElementById('filter-genre'),current=sel.value;
+  const genres=[...new Set(books.map(b=>b.genre).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">All Genres</option>'+genres.map(g=>`<option value="${g}">${g}</option>`).join('');
+  sel.value=current;
 }
 
 function filterBooks() {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  const genre = document.getElementById('filter-genre').value;
-  const status = document.getElementById('filter-status').value;
-  const hasFilters = q || genre || status;
-  document.getElementById('btn-clear-filters').style.display = hasFilters ? '' : 'none';
-  let list = books;
-  if (currentTab === 'read') list = books.filter(b => !b.tbr);
-  if (currentTab === 'tbr') list = books.filter(b => b.tbr);
-  const filtered = list.filter(b => {
-    const matchQ = !q || [b.title,b.author,b.genre,b.notes,b.description].some(s => s?.toLowerCase().includes(q));
-    const matchG = !genre || b.genre === genre;
-    const matchS = !status || (status==='available'&&!b.borrower) || (status==='borrowed'&&b.borrower) || (status==='rated'&&b.rating>0) || (status==='unrated'&&!b.rating);
-    return matchQ && matchG && matchS;
+  const q=document.getElementById('search-input').value.toLowerCase();
+  const genre=document.getElementById('filter-genre').value;
+  const status=document.getElementById('filter-status').value;
+  const hasFilters=q||genre||status;
+  document.getElementById('btn-clear-filters').style.display=hasFilters?'':'none';
+  let list=books;
+  if (currentTab==='read') list=books.filter(b=>!b.tbr);
+  if (currentTab==='tbr') list=books.filter(b=>b.tbr);
+  const filtered=list.filter(b=>{
+    const matchQ=!q||[b.title,b.author,b.genre,b.notes,b.description,b.series_name].some(s=>s?.toLowerCase().includes(q));
+    const matchG=!genre||b.genre===genre;
+    const matchS=!status||(status==='available'&&!b.borrower)||(status==='borrowed'&&b.borrower)||(status==='rated'&&b.rating>0)||(status==='unrated'&&!b.rating);
+    return matchQ&&matchG&&matchS;
   });
-  renderGrid(sortBooks(filtered), hasFilters || currentTab !== 'all');
+  renderGrid(sortBooks(filtered),hasFilters||currentTab!=='all');
 }
 
 function clearFilters() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('filter-genre').value = '';
-  document.getElementById('filter-status').value = '';
+  document.getElementById('search-input').value='';
+  document.getElementById('filter-genre').value='';
+  document.getElementById('filter-status').value='';
   filterBooks();
 }
 
 // ── Grid ──────────────────────────────────────────────────────────────────────
-function renderGrid(list, filtered=false) {
-  const grid = document.getElementById('grid'), empty = document.getElementById('empty');
-  document.getElementById('result-count').textContent = `${list.length} book${list.length!==1?'s':''}`;
+function renderGrid(list,filtered=false) {
+  const grid=document.getElementById('grid'),empty=document.getElementById('empty');
+  document.getElementById('result-count').textContent=`${list.length} book${list.length!==1?'s':''}`;
   if (!list.length) {
-    grid.style.display = 'none'; empty.style.display = 'flex';
-    document.getElementById('empty-title').textContent = filtered ? 'No books match' : 'Nothing here yet';
-    document.getElementById('empty-sub').textContent = filtered ? 'Try adjusting your filters' : (isOwner ? 'Add your first book!' : '');
+    grid.style.display='none'; empty.style.display='flex';
+    document.getElementById('empty-title').textContent=filtered?'No books match':'Nothing here yet';
+    document.getElementById('empty-sub').textContent=filtered?'Try adjusting your filters':(isOwner?'Add your first book!':'');
     return;
   }
-  grid.style.display = 'grid'; empty.style.display = 'none';
-  grid.innerHTML = list.map((book, i) => bookCardHTML(book, i)).join('');
-  if (dragMode && isOwner) {
-    grid.querySelectorAll('.book-card').forEach(el => {
-      setupDrag(el, el.dataset.id);
-      el.onclick = null; // disable click in drag mode
+  grid.style.display='grid'; empty.style.display='none';
+  grid.innerHTML=list.map((book,i)=>bookCardHTML(book,i)).join('');
+  if (dragMode&&isOwner) {
+    grid.querySelectorAll('.book-card').forEach(el=>{
+      setupDrag(el,el.dataset.id);
+      el.onclick=null;
     });
   }
 }
 
-function bookCardHTML(book, i) {
-  const coverHTML = book.cover_image
-    ? `<img src="${book.cover_image}" alt="${esc(book.title)}" loading="lazy">`
-    : `<div class="book-cover-placeholder"><div class="icon">📖</div><div class="ptitle">${esc(book.title||'')}</div></div>`;
-  const badge = book.borrower ? `<span class="book-badge badge-out">OUT</span>` : book.tbr ? `<span class="book-badge badge-tbr">TBR</span>` : '';
-  const handle = dragMode ? `<span class="drag-handle">⠿</span>` : '';
-  const starsHTML = book.rating > 0 ? starsDisplay(book.rating, 12) : '';
-  const clickHandler = dragMode ? '' : `onclick="showDetail(books.find(b=>b.id==='${book.id}'))"`;
-  return `
-    <div class="book-card" data-id="${book.id}" ${clickHandler} style="animation:slideUp .3s ease both;animation-delay:${i*20}ms">
-      <div class="book-cover">${coverHTML}${badge}${handle}</div>
-      <div class="book-info">
-        <div class="book-title">${esc(book.title||'Untitled')}</div>
-        <div class="book-author">${esc(book.author||'Unknown author')}</div>
-        ${starsHTML}
-      </div>
-    </div>`;
+function bookCardHTML(book,i) {
+  const coverHTML=book.cover_image?`<img src="${book.cover_image}" alt="${esc(book.title)}" loading="lazy">`:`<div class="book-cover-placeholder"><div class="icon">📖</div><div class="ptitle">${esc(book.title||'')}</div></div>`;
+  const badge=book.borrower?`<span class="book-badge badge-out">OUT</span>`:book.tbr?`<span class="book-badge badge-tbr">TBR</span>`:'';
+  const handle=dragMode?`<span class="drag-handle">⠿</span>`:'';
+  const starsHTML=book.rating>0?starsDisplay(book.rating,12):'';
+  const seriesHTML=book.series_name?`<div class="book-series-tag">#${book.series_order??'?'} in ${esc(book.series_name)}</div>`:'';
+  const clickHandler=dragMode?'':`onclick="showDetail(books.find(b=>b.id==='${book.id}'))"`;
+  return `<div class="book-card" data-id="${book.id}" ${clickHandler} style="animation:slideUp .3s ease both;animation-delay:${i*20}ms">
+    <div class="book-cover">${coverHTML}${badge}${handle}</div>
+    <div class="book-info">
+      <div class="book-title">${esc(book.title||'Untitled')}</div>
+      <div class="book-author">${esc(book.author||'Unknown author')}</div>
+      ${seriesHTML}${starsHTML}
+    </div>
+  </div>`;
 }
 
 // ── Stars ─────────────────────────────────────────────────────────────────────
-function starsDisplay(value, size=20) {
+function starsDisplay(value,size=20) {
   return `<div class="stars">${[1,2,3,4,5].map(n=>`<span class="star"><svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${value>=n?'#e8a838':'none'}" stroke="${value>=n?'#e8a838':'#888'}" stroke-width="1.8"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span>`).join('')}</div>`;
 }
-function starsClickable(value, size=28) {
+function starsClickable(value,size=28) {
   return `<div class="stars" id="star-row">${[1,2,3,4,5].map(n=>`<span class="star clickable" onclick="setRating(${value===n?0:n})"><svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${value>=n?'#e8a838':'none'}" stroke="${value>=n?'#e8a838':'#888'}" stroke-width="1.8" style="transition:all .15s"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span>`).join('')}</div>`;
 }
 
 // ── Detail ────────────────────────────────────────────────────────────────────
 function showDetail(book) {
   if (!book) return;
-  currentBook = book;
-  document.getElementById('detail-cover').innerHTML = book.cover_image
-    ? `<img src="${book.cover_image}" alt="${esc(book.title)}">`
-    : `<div id="detail-cover-placeholder"><span>📖</span></div>`;
+  currentBook=book;
+  document.getElementById('detail-cover').innerHTML=book.cover_image?`<img src="${book.cover_image}" alt="${esc(book.title)}">`:`<div id="detail-cover-placeholder"><span>📖</span></div>`;
 
-  const borrowSection = document.getElementById('borrow-section');
-  if (isOwner) { borrowSection.style.display = 'block'; renderBorrowSection(book); }
-  else if (book.borrower) { borrowSection.style.display = 'block'; document.getElementById('borrow-content').innerHTML = `<div class="borrowed-info"><div class="borrowed-by">📤 Currently borrowed</div></div>`; }
-  else { borrowSection.style.display = 'none'; }
+  const borrowSection=document.getElementById('borrow-section');
+  if (isOwner) { borrowSection.style.display='block'; renderBorrowSection(book); }
+  else if (book.borrower) { borrowSection.style.display='block'; document.getElementById('borrow-content').innerHTML=`<div class="borrowed-info"><div class="borrowed-by">📤 Currently borrowed</div></div>`; }
+  else { borrowSection.style.display='none'; }
 
-  const editActions = isOwner ? `<div id="detail-actions"><button class="btn btn-ghost btn-sm" onclick="showEditDetail()">Edit</button><button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete</button></div>` : '';
-  const tbrToggle = isOwner ? `<button class="btn ${book.tbr?'btn-primary':'btn-ghost'} btn-sm" onclick="toggleTBR()" style="margin-bottom:16px;width:100%">${book.tbr?'📘 Mark as Read':'📋 Mark as TBR'}</button>` : '';
-  const ratingSection = book.tbr ? '' : `<div class="info-box"><div class="info-box-title">Rating</div>${isOwner?starsClickable(book.rating||0):starsDisplay(book.rating||0,24)}${!book.rating?`<p style="color:var(--text-dim);font-size:13px;margin-top:6px">${isOwner?'Click to rate':'Not yet rated'}</p>`:''}</div>`;
-  const requestBtn = !isOwner && !book.borrower ? `<button class="btn btn-request" style="margin-bottom:16px;width:100%" onclick="openRequestModal(currentBook)">📩 Request to Borrow</button>` : '';
+  const editActions=isOwner?`<div id="detail-actions"><button class="btn btn-ghost btn-sm" onclick="showEditDetail()">Edit</button><button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete</button></div>`:'';
+  const tbrToggle=isOwner?`<button class="btn ${book.tbr?'btn-primary':'btn-ghost'} btn-sm" onclick="toggleTBR()" style="margin-bottom:16px;width:100%">${book.tbr?'📘 Mark as Read':'📋 Mark as TBR'}</button>`:'';
+  const ratingSection=book.tbr?'':`<div class="info-box"><div class="info-box-title">Rating</div>${isOwner?starsClickable(book.rating||0):starsDisplay(book.rating||0,24)}${!book.rating?`<p style="color:var(--text-dim);font-size:13px;margin-top:6px">${isOwner?'Click to rate':'Not yet rated'}</p>`:''}</div>`;
+  const requestBtn=!isOwner&&!book.borrower?`<button class="btn btn-request" style="margin-bottom:16px;width:100%" onclick="openRequestModal(currentBook)">📩 Request to Borrow</button>`:'';
 
-  document.getElementById('detail-info').innerHTML = `
+  // Series section — show other books in the same series
+  let seriesSection = '';
+  if (book.series_name) {
+    const seriesBooks = books.filter(b=>b.series_name===book.series_name).sort((a,b)=>(a.series_order??999)-(b.series_order??999));
+    const rows = seriesBooks.map(b=>`
+      <div class="series-book-row ${b.id===book.id?'current':''}" onclick="${b.id!==book.id?`showDetail(books.find(b=>b.id==='${b.id}'))`:''}">
+        <div class="series-num ${b.id===book.id?'current':''}">${b.series_order??'?'}</div>
+        ${b.cover_image?`<img class="series-book-cover" src="${b.cover_image}" alt="">`:`<div class="series-book-cover" style="display:flex;align-items:center;justify-content:center;font-size:16px">📖</div>`}
+        <div class="series-book-info">
+          <div class="series-book-title">${esc(b.title)}</div>
+          <div class="series-book-meta">${b.tbr?'<span class="series-tbr-dot">TBR</span>':b.rating>0?'★'.repeat(b.rating):''}</div>
+        </div>
+      </div>`).join('');
+    seriesSection=`<div class="info-box"><div class="info-box-title">📚 ${esc(book.series_name)} Series</div>${rows}</div>`;
+  }
+
+  document.getElementById('detail-info').innerHTML=`
     <div>
       <div id="detail-title-row"><h2 id="detail-title">${esc(book.title||'Untitled')}</h2>${editActions}</div>
       ${book.author?`<div id="detail-author">by ${esc(book.author)}</div>`:''}
       <div id="detail-meta">
         ${book.genre?`<span class="genre-tag">${esc(book.genre)}</span>`:''}
+        ${book.series_name?`<span class="series-tag-detail">📚 #${book.series_order??'?'} in ${esc(book.series_name)}</span>`:''}
         ${book.tbr?`<span class="tbr-tag">📋 To Be Read</span>`:''}
         <span class="added-date">Added ${new Date(book.added_at).toLocaleDateString()}</span>
       </div>
-      ${tbrToggle}${requestBtn}${ratingSection}
+      ${tbrToggle}${requestBtn}${ratingSection}${seriesSection}
       ${book.description?`<div class="info-box"><div class="info-box-title">About</div><p>${esc(book.description)}</p></div>`:''}
       ${book.notes&&isOwner?`<div class="info-box"><div class="info-box-title">Personal Notes</div><p class="notes-text">${esc(book.notes)}</p></div>`:''}
     </div>`;
@@ -797,29 +880,29 @@ function showDetail(book) {
 async function toggleTBR() {
   if (!currentBook||!isOwner) return;
   try {
-    const newTBR = !currentBook.tbr;
-    await updateBook(currentBook.id, { tbr: newTBR, rating: newTBR?0:currentBook.rating });
-    currentBook.tbr = newTBR; if (newTBR) currentBook.rating = 0;
-    const idx = books.findIndex(b=>b.id===currentBook.id);
-    if (idx>-1) { books[idx].tbr=newTBR; if(newTBR) books[idx].rating=0; }
+    const newTBR=!currentBook.tbr;
+    await updateBook(currentBook.id,{tbr:newTBR,rating:newTBR?0:currentBook.rating});
+    currentBook.tbr=newTBR; if(newTBR) currentBook.rating=0;
+    const idx=books.findIndex(b=>b.id===currentBook.id);
+    if(idx>-1){books[idx].tbr=newTBR;if(newTBR)books[idx].rating=0;}
     updateStats(); showDetail(currentBook);
     showToast(newTBR?'Marked as TBR':'Marked as Read');
   } catch { showToast('Update failed','error'); }
 }
 
 function renderBorrowSection(book) {
-  const content = document.getElementById('borrow-content');
+  const content=document.getElementById('borrow-content');
   if (book.borrower) {
-    content.innerHTML = `<div class="borrowed-info"><div class="borrowed-by">Currently with</div><div class="borrowed-name">${esc(book.borrower)}</div>${book.borrowed_at?`<div class="borrowed-date">Since ${new Date(book.borrowed_at).toLocaleDateString()}</div>`:''}</div><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markReturned()">Mark Returned</button>`;
+    content.innerHTML=`<div class="borrowed-info"><div class="borrowed-by">Currently with</div><div class="borrowed-name">${esc(book.borrower)}</div>${book.borrowed_at?`<div class="borrowed-date">Since ${new Date(book.borrowed_at).toLocaleDateString()}</div>`:''}</div><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markReturned()">Mark Returned</button>`;
   } else {
-    content.innerHTML = `<input type="text" id="borrower-input" placeholder="Borrower's name" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')markBorrowed()"><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markBorrowed()">Mark as Borrowed</button>`;
+    content.innerHTML=`<input type="text" id="borrower-input" placeholder="Borrower's name" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')markBorrowed()"><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markBorrowed()">Mark as Borrowed</button>`;
   }
 }
 
 async function setRating(r) {
   if (!currentBook||!isOwner) return;
   try {
-    await updateBook(currentBook.id, {rating:r});
+    await updateBook(currentBook.id,{rating:r});
     currentBook.rating=r;
     const idx=books.findIndex(b=>b.id===currentBook.id);
     if(idx>-1) books[idx].rating=r;
@@ -828,12 +911,11 @@ async function setRating(r) {
 }
 
 async function markBorrowed() {
-  const name = document.getElementById('borrower-input')?.value?.trim();
-  if (!name) return;
+  const name=document.getElementById('borrower-input')?.value?.trim(); if(!name) return;
   try {
-    const patch = {borrower:name,borrowed_at:Date.now()};
-    await updateBook(currentBook.id, patch);
-    Object.assign(currentBook, patch);
+    const patch={borrower:name,borrowed_at:Date.now()};
+    await updateBook(currentBook.id,patch);
+    Object.assign(currentBook,patch);
     const idx=books.findIndex(b=>b.id===currentBook.id);
     if(idx>-1) Object.assign(books[idx],patch);
     showDetail(currentBook); showToast(`Marked as borrowed by ${name}`);
@@ -843,7 +925,7 @@ async function markBorrowed() {
 async function markReturned() {
   try {
     const patch={borrower:null,borrowed_at:null};
-    await updateBook(currentBook.id, patch);
+    await updateBook(currentBook.id,patch);
     Object.assign(currentBook,patch);
     const idx=books.findIndex(b=>b.id===currentBook.id);
     if(idx>-1) Object.assign(books[idx],patch);
@@ -863,12 +945,14 @@ async function confirmDelete() {
 function showEditDetail() {
   const b=currentBook;
   const GENRES=['Fiction','Non-Fiction','Fantasy','Sci-Fi','Mystery','Thriller','Romance','Historical','Biography','Self-Help','Children','Young Adult','Horror','Literary Fiction','Poetry','Romantasy','Other'];
-  document.getElementById('detail-info').innerHTML = `
+  document.getElementById('detail-info').innerHTML=`
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="form-row"><label class="field-label">Title</label><input id="e-title" value="${esc(b.title||'')}"></div>
       <div class="form-row"><label class="field-label">Author</label><input id="e-author" value="${esc(b.author||'')}"></div>
       <div class="form-row"><label class="field-label">Genre</label><select id="e-genre">${GENRES.map(g=>`<option${g===b.genre?' selected':''}>${g}</option>`).join('')}</select></div>
       <div class="form-row"><label class="field-label">Reading Status</label><select id="e-tbr"><option value="read"${!b.tbr?' selected':''}>Read</option><option value="tbr"${b.tbr?' selected':''}>To Be Read (TBR)</option></select></div>
+      <div class="form-row"><label class="field-label">Series Name</label><input id="e-series-name" value="${esc(b.series_name||'')}" placeholder="e.g. Wheel of Time"></div>
+      <div class="form-row"><label class="field-label">Book # in Series</label><input id="e-series-order" type="number" value="${b.series_order??''}" placeholder="e.g. 1, 2, 3" min="0" step="0.5"></div>
       <div class="form-row"><label class="field-label">Description</label><textarea id="e-desc" rows="4">${esc(b.description||'')}</textarea></div>
       <div class="form-row"><label class="field-label">Notes</label><textarea id="e-notes" rows="2">${esc(b.notes||'')}</textarea></div>
       <div class="form-actions"><button class="btn btn-primary" onclick="saveEditDetail()">Save Changes</button><button class="btn btn-ghost" onclick="showDetail(currentBook)">Cancel</button></div>
@@ -876,7 +960,17 @@ function showEditDetail() {
 }
 
 async function saveEditDetail() {
-  const patch={title:document.getElementById('e-title').value.trim(),author:document.getElementById('e-author').value.trim(),genre:document.getElementById('e-genre').value,tbr:document.getElementById('e-tbr').value==='tbr',description:document.getElementById('e-desc').value.trim(),notes:document.getElementById('e-notes').value.trim()};
+  const seriesOrder = document.getElementById('e-series-order').value;
+  const patch={
+    title:document.getElementById('e-title').value.trim(),
+    author:document.getElementById('e-author').value.trim(),
+    genre:document.getElementById('e-genre').value,
+    tbr:document.getElementById('e-tbr').value==='tbr',
+    series_name:document.getElementById('e-series-name').value.trim()||null,
+    series_order:seriesOrder!==''?parseFloat(seriesOrder):null,
+    description:document.getElementById('e-desc').value.trim(),
+    notes:document.getElementById('e-notes').value.trim(),
+  };
   try {
     await updateBook(currentBook.id,patch);
     Object.assign(currentBook,patch);
@@ -892,7 +986,7 @@ function resetAddForm() {
   document.getElementById('cover-preview').style.display='none';
   document.getElementById('cover-preview').src='';
   document.getElementById('cover-placeholder').style.display='flex';
-  ['add-title','add-author','add-description','add-notes'].forEach(id=>document.getElementById(id).value='');
+  ['add-title','add-author','add-description','add-notes','add-series-name','add-series-order'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('add-genre').value='Fiction';
   document.getElementById('add-status').value='read';
   document.getElementById('ai-status').textContent='';
@@ -924,7 +1018,7 @@ async function handleCoverUpload(event) {
 
 function resizeImage(file,maxSize) {
   return new Promise(resolve=>{
-    const img=new Image(), url=URL.createObjectURL(file);
+    const img=new Image(),url=URL.createObjectURL(file);
     img.onload=()=>{
       const canvas=document.createElement('canvas');
       let w=img.width,h=img.height;
@@ -950,9 +1044,21 @@ async function saveBook() {
   if(!title){alert('Please enter a title');return;}
   const btn=document.getElementById('btn-save-book');
   btn.disabled=true;btn.textContent='Saving…';
-  const book={id:Date.now().toString(36)+Math.random().toString(36).slice(2),title,author:document.getElementById('add-author').value.trim(),genre:document.getElementById('add-genre').value,tbr:document.getElementById('add-status').value==='tbr',description:document.getElementById('add-description').value.trim(),notes:document.getElementById('add-notes').value.trim(),cover_image:coverBase64||null,rating:0,borrower:null,borrowed_at:null,added_at:Date.now(),sort_order:0};
+  const seriesOrder=document.getElementById('add-series-order').value;
+  const book={
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2),
+    title,
+    author:document.getElementById('add-author').value.trim(),
+    genre:document.getElementById('add-genre').value,
+    tbr:document.getElementById('add-status').value==='tbr',
+    series_name:document.getElementById('add-series-name').value.trim()||null,
+    series_order:seriesOrder!==''?parseFloat(seriesOrder):null,
+    description:document.getElementById('add-description').value.trim(),
+    notes:document.getElementById('add-notes').value.trim(),
+    cover_image:coverBase64||null,
+    rating:0,borrower:null,borrowed_at:null,added_at:Date.now(),sort_order:0
+  };
   try {
-    // Give it sort_order 0 and shift others
     await insertBook(book);
     books.unshift(book);
     updateStats(); showLibrary(); showToast(`"${title}" added!`);
