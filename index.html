@@ -244,7 +244,7 @@
             <option>Sci-Fi</option><option>Mystery</option><option>Thriller</option>
             <option>Romance</option><option>Historical</option><option>Biography</option>
             <option>Self-Help</option><option>Children</option><option>Young Adult</option>
-            <option>Horror</option><option>Literary Fiction, Romantasy, Poetry, Other</option><option>Literary Fiction, Romantasy, Poetry, Other</option><option>Literary Fiction, Romantasy, Poetry, Other</option>
+            <option>Horror</option><option>Literary Fiction</option><option>Poetry</option><option>Romantasy</option><option>Other</option>
           </select>
         </div>
         <div class="form-row">
@@ -695,7 +695,7 @@ async function confirmDelete() {
 
 function showEditDetail() {
   const b = currentBook;
-  const GENRES = ['Fiction','Non-Fiction','Fantasy','Sci-Fi','Mystery','Thriller','Romance','Historical','Biography','Self-Help','Children','Young Adult','Horror','Literary Fiction, Romantasy, Poetry, Other','Literary Fiction, Romantasy, Poetry, Other','Literary Fiction, Romantasy, Poetry, Other'];
+  const GENRES = ['Fiction','Non-Fiction','Fantasy','Sci-Fi','Mystery','Thriller','Romance','Historical','Biography','Self-Help','Children','Young Adult','Horror','Literary Fiction','Poetry','Romantasy','Other'];
   document.getElementById('detail-info').innerHTML = `
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="form-row"><label class="field-label">Title</label><input id="e-title" value="${esc(b.title||'')}"></div>
@@ -798,7 +798,7 @@ async function identifyBook(base64) {
       messages: [{ role: 'user', content: [
         { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64 } },
         { type: 'text', text: `Identify this book cover. Respond ONLY with JSON, no markdown:
-{"title":"","author":"","genre":"one of: Fiction, Non-Fiction, Fantasy, Sci-Fi, Mystery, Thriller, Romance, Historical, Biography, Self-Help, Children, Young Adult, Horror, Literary Fiction, Romantasy, Poetry, Other, Literary Fiction, Romantasy, Poetry, Other, Literary Fiction, Romantasy, Poetry, Other","description":"2-3 sentence description if you recognize the book, otherwise empty string"}` }
+{"title":"","author":"","genre":"one of: Fiction, Non-Fiction, Fantasy, Sci-Fi, Mystery, Thriller, Romance, Historical, Biography, Self-Help, Children, Young Adult, Horror, Literary Fiction, Poetry, Other","description":"2-3 sentence description if you recognize the book, otherwise empty string"}` }
       ]}]
     })
   });
