@@ -155,10 +155,10 @@
   .notes-text { color: #a09888; font-size: 14px; font-style: italic; line-height: 1.6; }
   /* Spice rating */
   .spice-row { align-items: center; display: flex; gap: 4px; margin-bottom: 4px; }
-  .pepper { cursor: default; font-size: 14px; opacity: 0.3; transition: opacity .15s; pointer-events: none; }
-  .pepper.lit { opacity: 1; }
+  .pepper { cursor: default; font-size: 14px; opacity: 0.25; filter: grayscale(1); transition: all .15s; pointer-events: none; }
+  .pepper.lit { opacity: 1; filter: grayscale(0) sepia(1) saturate(5) hue-rotate(-10deg); }
   .pepper.clickable { cursor: pointer; pointer-events: auto; }
-  .pepper.clickable:hover { opacity: 0.8; }
+  .pepper.clickable:hover { opacity: 0.7; filter: grayscale(0) sepia(1) saturate(3) hue-rotate(-10deg); }
   .book-card .pepper { pointer-events: none !important; }
   .door-tag { border-radius: 20px; font-size: 10px; letter-spacing: .5px; padding: 2px 8px; font-family: 'Lato', sans-serif; }
   .door-open { background: #2a1a1a; border: 1px solid #7a3030; color: #e07070; }
