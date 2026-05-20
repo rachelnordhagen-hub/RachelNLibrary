@@ -896,7 +896,7 @@ function renderPeppers(value, size, clickFn) {
     const lit = value >= n ? 'lit' : '';
     const clickable = clickFn ? 'clickable' : '';
     const handler = clickFn ? 'onclick="' + clickFn + '(' + (value===n?0:n) + ')"' : '';
-    return '<span class="pepper ' + lit + ' ' + clickable + '" ' + handler + ' style="font-size:' + (size||16) + 'px">{1F336}</span>';
+    return '<span class="pepper ' + lit + ' ' + clickable + '" ' + handler + ' style="font-size:' + (size||16) + 'px">🌶</span>';
   }).join('');
 }
 
@@ -904,7 +904,7 @@ function renderAddPeppers() {
   const row = document.getElementById('add-peppers');
   if (!row) return;
   row.innerHTML = [1,2,3,4,5].map(n =>
-    '<span onclick="setAddSpice(' + (addSpice===n?0:n) + ')" class="pepper clickable ' + (addSpice>=n?'lit':'') + '" style="font-size:24px">{1F336}</span>'
+    '<span onclick="setAddSpice(' + (addSpice===n?0:n) + ')" class="pepper clickable ' + (addSpice>=n?'lit':'') + '" style="font-size:24px">🌶</span>'
   ).join('');
 }
 function setAddSpice(r) { addSpice = r; renderAddPeppers(); }
@@ -989,9 +989,10 @@ async function toggleTBR() {
 function renderBorrowSection(book) {
   const content=document.getElementById('borrow-content');
   if (book.borrower) {
-    content.innerHTML=`<div class="borrowed-info"><div class="borrowed-by">Currently with</div><div class="borrowed-name">${esc(book.borrower)}</div>${book.borrowed_at?`<div class="borrowed-date">Since ${new Date(book.borrowed_at).toLocaleDateString()}</div>`:''}</div><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markReturned()">Mark Returned</button>`;
+    const dateHTML = book.borrowed_at ? '<div class="borrowed-date">Since ' + new Date(book.borrowed_at).toLocaleDateString() + '</div>' : '';
+    content.innerHTML = '<div class="borrowed-info"><div class="borrowed-by">Currently with</div><div class="borrowed-name">' + esc(book.borrower) + '</div>' + dateHTML + '</div><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markReturned()">Mark Returned</button>';
   } else {
-    content.innerHTML=`<input type="text" id="borrower-input" placeholder="Borrower's name" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')markBorrowed()"><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markBorrowed()">Mark as Borrowed</button>`;
+    content.innerHTML='<input type="text" id="borrower-input" placeholder="Borrower name" style="margin-bottom:8px" onkeydown="if(event.key==\'Enter\')markBorrowed()"><button class="btn btn-primary" style="width:100%;font-size:12px" onclick="markBorrowed()">Mark as Borrowed</button>';
   }
 }
 
@@ -1072,7 +1073,7 @@ function showEditDetail() {
       <div class="form-row"><label class="field-label">Book # in Series</label><input id="e-series-order" type="number" value="${b.series_order??''}" placeholder="e.g. 1, 2, 3" min="0" step="0.5"></div>
       <div class="form-row"><label class="field-label">Description</label><textarea id="e-desc" rows="4">${esc(b.description||'')}</textarea></div>
       <div class="form-row"><label class="field-label">Notes</label><textarea id="e-notes" rows="2">${esc(b.notes||'')}</textarea></div>
-      <div class="form-row"><label class="field-label">Spice Rating 🌶️</label><div style="display:flex;gap:4px;margin-top:4px">${[1,2,3,4,5].map(n=>`<span onclick="setEditSpice(${(b.spice_rating||0)===n?0:n})" id="esp-${n}" class="pepper clickable ${(b.spice_rating||0)>=n?'lit':''}" style="font-size:24px">🌶️</span>`).join('')}</div></div>
+      <div class="form-row"><label class="field-label">Spice Rating 🌶️</label><div id="edit-spice-row" style="display:flex;gap:4px;margin-top:4px"></div></div>
       <div class="form-row"><label class="field-label">Door Tag</label>
         <select id="e-door-tag">
           <option value="">— None —</option>
@@ -1082,7 +1083,15 @@ function showEditDetail() {
       </div>
       <div class="form-actions"><button class="btn btn-primary" onclick="saveEditDetail()">Save Changes</button><button class="btn btn-ghost" onclick="showDetail(currentBook)">Cancel</button></div>
     </div>`;
-  setTimeout(() => renderGenrePicker('edit-genre-picker', editGenres), 50);
+  setTimeout(() => {
+    renderGenrePicker('edit-genre-picker', editGenres);
+    const editPepperRow = document.getElementById('edit-spice-row');
+    if (editPepperRow) {
+      editPepperRow.innerHTML = [1,2,3,4,5].map(n =>
+        '<span onclick="setEditSpice(' + (editSpice===n?0:n) + ')" id="esp-' + n + '" class="pepper clickable ' + (editSpice>=n?'lit':'') + '" style="font-size:24px">🌶</span>'
+      ).join('');
+    }
+  }, 50);
 }
 
 async function saveEditDetail() {
