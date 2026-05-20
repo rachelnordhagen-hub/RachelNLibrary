@@ -891,6 +891,24 @@ function renderAddStars() {
 }
 function setAddRating(r) { addRating=r; renderAddStars(); }
 
+function renderPeppers(value, size, clickFn) {
+  return [1,2,3,4,5].map(n => {
+    const lit = value >= n ? 'lit' : '';
+    const clickable = clickFn ? 'clickable' : '';
+    const handler = clickFn ? 'onclick="' + clickFn + '(' + (value===n?0:n) + ')"' : '';
+    return '<span class="pepper ' + lit + ' ' + clickable + '" ' + handler + ' style="font-size:' + (size||16) + 'px">{1F336}</span>';
+  }).join('');
+}
+
+function renderAddPeppers() {
+  const row = document.getElementById('add-peppers');
+  if (!row) return;
+  row.innerHTML = [1,2,3,4,5].map(n =>
+    '<span onclick="setAddSpice(' + (addSpice===n?0:n) + ')" class="pepper clickable ' + (addSpice>=n?'lit':'') + '" style="font-size:24px">{1F336}</span>'
+  ).join('');
+}
+function setAddSpice(r) { addSpice = r; renderAddPeppers(); }
+
 function starsDisplay(value,size=20) {
   return `<div class="stars">${[1,2,3,4,5].map(n=>`<span class="star"><svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${value>=n?'#e8a838':'none'}" stroke="${value>=n?'#e8a838':'#888'}" stroke-width="1.8"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span>`).join('')}</div>`;
 }
