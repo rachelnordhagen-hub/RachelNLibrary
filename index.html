@@ -892,22 +892,13 @@ function renderAddStars() {
 }
 function setAddRating(r) { addRating=r; renderAddStars(); }
 
-function pepperSVG(size, lit) {
-  const color = lit ? '#e03030' : '#444';
-  const hl = lit ? '#ff7070' : '#666';
-  const s = size || 20;
-  return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;transition:all .15s">'
-    + '<path d="M14 2 C14 2 13 4 14 6 C15 7 16 7 16 7 C14 8 11 8 10 10 C8 13 8 17 10 20 C11.5 22 14 23 16 22 C18 21 20 19 20 16 C20 13 19 10 17 9 C17 9 17 7 16 6 C18 5 19 3 18 2 C17 1 15 1 14 2 Z" fill="' + color + '"/>'
-    + '<path d="M12 12 C11 14 11 17 12 19" stroke="' + hl + '" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6"/>'
-    + '</svg>';
-}
-
 function renderPeppers(value, size, clickFn) {
   return [1,2,3,4,5].map(n => {
     const lit = value >= n;
     const clickable = clickFn ? 'clickable' : '';
     const handler = clickFn ? 'onclick="' + clickFn + '(' + (value===n?0:n) + ')"' : '';
-    return '<span class="pepper ' + (lit?'lit':'unlit') + ' ' + clickable + '" ' + handler + ' style="font-size:' + (size||16) + 'px;display:inline-flex">' + pepperSVG(size, lit) + '</span>';
+    const emoji = lit ? '🌶️' : '🌶️';
+    return '<span class="pepper ' + (lit?'lit':'unlit') + ' ' + clickable + '" ' + handler + ' style="font-size:' + (size||16) + 'px">' + emoji + '</span>';
   }).join('');
 }
 
@@ -915,7 +906,7 @@ function renderAddPeppers() {
   const row = document.getElementById('add-peppers');
   if (!row) return;
   row.innerHTML = [1,2,3,4,5].map(n =>
-    '<span onclick="setAddSpice(' + (addSpice===n?0:n) + ')" class="pepper clickable ' + (addSpice>=n?'lit':'unlit') + '" style="display:inline-flex">' + pepperSVG(28, addSpice>=n) + '</span>'
+    '<span onclick="setAddSpice(' + (addSpice===n?0:n) + ')" class="pepper clickable ' + (addSpice>=n?'lit':'unlit') + '" style="font-size:28px">🌶️</span>'
   ).join('');
 }
 function setAddSpice(r) { addSpice = r; renderAddPeppers(); }
@@ -1099,7 +1090,7 @@ function showEditDetail() {
     const editPepperRow = document.getElementById('edit-spice-row');
     if (editPepperRow) {
       editPepperRow.innerHTML = [1,2,3,4,5].map(n =>
-        '<span onclick="setEditSpice(' + (editSpice===n?0:n) + ')" id="esp-' + n + '" class="pepper clickable ' + (editSpice>=n?'lit':'unlit') + '" style="display:inline-flex">' + pepperSVG(28, editSpice>=n) + '</span>'
+        '<span onclick="setEditSpice(' + (editSpice===n?0:n) + ')" id="esp-' + n + '" class="pepper clickable ' + (editSpice>=n?'lit':'unlit') + '" style="font-size:28px">🌶️</span>'
       ).join('');
     }
   }, 50);
