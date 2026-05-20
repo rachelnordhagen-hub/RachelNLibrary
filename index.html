@@ -34,6 +34,13 @@
   input:focus, textarea:focus, select:focus { border-color: var(--gold); }
   textarea { resize: vertical; }
   select option { background: var(--bg2); }
+
+  /* Multi-select genre picker */
+  .genre-picker { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; padding: 10px; transition: border .15s; }
+  .genre-picker:focus-within { border-color: var(--gold); }
+  .genre-chip { align-items: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 4px; padding: 4px 10px; transition: all .15s; user-select: none; }
+  .genre-chip:hover { border-color: var(--gold); color: var(--gold); }
+  .genre-chip.selected { background: #2a1a3a; border-color: #c090f0; color: #c090f0; font-weight: 700; }
   .field-label { color: var(--text-muted); display: block; font-size: 11px; letter-spacing: .8px; margin-bottom: 5px; text-transform: uppercase; }
 
   @keyframes fadeIn { from { opacity:0; transform:translateY(-8px) } to { opacity:1; transform:none } }
@@ -85,6 +92,8 @@
   .book-info { padding: 10px 12px 12px; }
   .book-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
   .book-author { color: var(--text-muted); font-size: 11px; margin-bottom: 4px; }
+  .book-genres { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 4px; }
+  .book-genre-tag { background: #2a1a3a; border-radius: 10px; color: #c090f0; font-size: 9px; padding: 2px 6px; }
   .book-series-tag { color: #a080c0; font-size: 10px; margin-bottom: 4px; font-style: italic; }
   .tbr-tag { background: #1a3a5a; border-radius: 20px; color: #90c0ff; font-size: 12px; letter-spacing: .5px; padding: 4px 12px; }
   .series-tag-detail { background: #2a1a3a; border-radius: 20px; color: #c090f0; font-size: 12px; letter-spacing: .5px; padding: 4px 12px; }
@@ -384,6 +393,8 @@ const SUPABASE_URL = 'https://kdaixtzcppdmqnkoyaiw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_-5kF3Mnd9ub6o0HDwRvBAA_TZkIHTtR';
 const OWNER_CODE = 'books';
 
+const ALL_GENRES = ['Biography','Children','Fantasy','Fiction','Historical','Horror','LGBT+','Literary Fiction','Mystery','Non-Fiction','Other','Poetry','Romance','Romantasy','Sci-Fi','Self-Help','Thriller','Young Adult'];
+
 let books = [];
 let currentBook = null;
 let isOwner = localStorage.getItem('lib-owner') === 'true';
@@ -393,6 +404,8 @@ let currentSort = localStorage.getItem('lib-sort') || 'custom';
 let dragMode = false;
 let dragSrcId = null;
 let addRating = 0;
+let addGenres = [];
+let editGenres = [];
 
 // ── Supabase ──────────────────────────────────────────────────────────────────
 async function dbFetch(path, opts={}) {
@@ -403,6 +416,30 @@ async function dbFetch(path, opts={}) {
   if (!res.ok) throw new Error(await res.text());
   const text = await res.text();
   return text ? JSON.parse(text) : null;
+}
+
+function getBookGenres(book) {
+  if (book.genres && book.genres.length > 0) return book.genres;
+  if (book.genre) return [book.genre];
+  return [];
+}
+
+function renderGenrePicker(containerId, selectedGenres, onToggleFn) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = ALL_GENRES.map(g => `<span class="genre-chip ${selectedGenres.includes(g) ? 'selected' : ''}" onclick="${onToggleFn}('${g}','${containerId}')">${g}</span>`).join('');
+}
+
+function toggleAddGenre(genre) {
+  if (addGenres.includes(genre)) { addGenres = addGenres.filter(g => g !== genre); }
+  else { addGenres.push(genre); }
+  renderGenrePicker('add-genre-picker', addGenres, 'toggleAddGenre');
+}
+
+function toggleEditGenre(genre) {
+  if (editGenres.includes(genre)) { editGenres = editGenres.filter(g => g !== genre); }
+  else { editGenres.push(genre); }
+  renderGenrePicker('edit-genre-picker', editGenres, 'toggleEditGenre');
 }
 
 async function loadBooks() { return dbFetch('books?order=sort_order.asc,added_at.desc'); }
@@ -714,7 +751,7 @@ function showView(id) {
   window.scrollTo(0,0);
 }
 function showLibrary() { showView('view-library'); filterBooks(); }
-function showAdd() { resetAddForm(); showView('view-add'); setTimeout(renderAddStars, 50); }
+function showAdd() { resetAddForm(); showView('view-add'); setTimeout(() => { renderGenrePicker('add-genre-picker', addGenres, 'toggleAddGenre'); renderAddStars(); }, 50); }
 
 function updateOwnerUI() {
   document.getElementById('btn-add-book').style.display = isOwner?'':'none';
@@ -771,7 +808,8 @@ function filterBooks() {
   if (currentTab==='tbr') list=books.filter(b=>b.tbr);
   const filtered=list.filter(b=>{
     const matchQ=!q||[b.title,b.author,b.genre,b.notes,b.description,b.series_name].some(s=>s?.toLowerCase().includes(q));
-    const matchG=!genre||b.genre===genre;
+    const bGenres=getBookGenres(b);
+    const matchG=!genre||bGenres.includes(genre);
     const matchS=!status||(status==='available'&&!b.borrower)||(status==='borrowed'&&b.borrower)||(status==='rated'&&b.rating>0)||(status==='unrated'&&!b.rating);
     return matchQ&&matchG&&matchS;
   });
@@ -811,13 +849,15 @@ function bookCardHTML(book,i) {
   const handle=dragMode?`<span class="drag-handle">⠿</span>`:'';
   const starsHTML=book.rating>0?starsDisplay(book.rating,12):'';
   const seriesHTML=book.series_name?`<div class="book-series-tag">#${book.series_order??'?'} in ${esc(book.series_name)}</div>`:'';
+  const bGenres = getBookGenres(book);
+  const genresHTML = bGenres.length ? `<div class="book-genres">${bGenres.map(g=>`<span class="book-genre-tag">${esc(g)}</span>`).join('')}</div>` : '';
   const clickHandler=dragMode?'':`onclick="showDetail(books.find(b=>b.id==='${book.id}'))"`;
   return `<div class="book-card" data-id="${book.id}" ${clickHandler} style="animation:slideUp .3s ease both;animation-delay:${i*20}ms">
     <div class="book-cover">${coverHTML}${badge}${handle}</div>
     <div class="book-info">
       <div class="book-title">${esc(book.title||'Untitled')}</div>
       <div class="book-author">${esc(book.author||'Unknown author')}</div>
-      ${seriesHTML}${starsHTML}
+      ${genresHTML}${seriesHTML}${starsHTML}
     </div>
   </div>`;
 }
@@ -953,12 +993,12 @@ async function confirmDelete() {
 
 function showEditDetail() {
   const b=currentBook;
-  const GENRES=['Fiction','Non-Fiction','Fantasy','Sci-Fi','Mystery','Thriller','Romance','Historical','Biography','Self-Help','Children','Young Adult','Horror','Literary Fiction','Poetry','Romantasy','Other'];
+  editGenres = [...getBookGenres(b)];
   document.getElementById('detail-info').innerHTML=`
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="form-row"><label class="field-label">Title</label><input id="e-title" value="${esc(b.title||'')}"></div>
       <div class="form-row"><label class="field-label">Author</label><input id="e-author" value="${esc(b.author||'')}"></div>
-      <div class="form-row"><label class="field-label">Genre</label><select id="e-genre">${GENRES.map(g=>`<option${g===b.genre?' selected':''}>${g}</option>`).join('')}</select></div>
+      <div class="form-row"><label class="field-label">Genres (pick all that apply)</label><div class="genre-picker" id="edit-genre-picker"></div></div>
       <div class="form-row"><label class="field-label">Reading Status</label><select id="e-tbr"><option value="read"${!b.tbr?' selected':''}>Read</option><option value="tbr"${b.tbr?' selected':''}>To Be Read (TBR)</option></select></div>
       <div class="form-row"><label class="field-label">Series Name</label><input id="e-series-name" value="${esc(b.series_name||'')}" placeholder="e.g. Wheel of Time"></div>
       <div class="form-row"><label class="field-label">Book # in Series</label><input id="e-series-order" type="number" value="${b.series_order??''}" placeholder="e.g. 1, 2, 3" min="0" step="0.5"></div>
@@ -966,6 +1006,7 @@ function showEditDetail() {
       <div class="form-row"><label class="field-label">Notes</label><textarea id="e-notes" rows="2">${esc(b.notes||'')}</textarea></div>
       <div class="form-actions"><button class="btn btn-primary" onclick="saveEditDetail()">Save Changes</button><button class="btn btn-ghost" onclick="showDetail(currentBook)">Cancel</button></div>
     </div>`;
+  setTimeout(() => renderGenrePicker('edit-genre-picker', editGenres, 'toggleEditGenre'), 50);
 }
 
 async function saveEditDetail() {
@@ -973,7 +1014,8 @@ async function saveEditDetail() {
   const patch={
     title:document.getElementById('e-title').value.trim(),
     author:document.getElementById('e-author').value.trim(),
-    genre:document.getElementById('e-genre').value,
+    genres:editGenres,
+    genre:editGenres[0]||null,
     tbr:document.getElementById('e-tbr').value==='tbr',
     series_name:document.getElementById('e-series-name').value.trim()||null,
     series_order:seriesOrder!==''?parseFloat(seriesOrder):null,
@@ -991,12 +1033,13 @@ async function saveEditDetail() {
 
 // ── Add book ──────────────────────────────────────────────────────────────────
 function resetAddForm() {
+  addGenres = [];
   coverBase64=null;
   document.getElementById('cover-preview').style.display='none';
   document.getElementById('cover-preview').src='';
   document.getElementById('cover-placeholder').style.display='flex';
   ['add-title','add-author','add-description','add-notes','add-series-name','add-series-order'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('add-genre').value='Fiction';
+  
   document.getElementById('add-status').value='read';
   document.getElementById('ai-status').textContent='';
   document.getElementById('ai-status').className='';
@@ -1018,7 +1061,7 @@ async function handleCoverUpload(event) {
     const info=await identifyBook(dataUrl.split(',')[1]);
     if(info.title) document.getElementById('add-title').value=info.title;
     if(info.author) document.getElementById('add-author').value=info.author;
-    if(info.genre) document.getElementById('add-genre').value=info.genre;
+    if(info.genre && ALL_GENRES.includes(info.genre)) { addGenres=[info.genre]; renderGenrePicker('add-genre-picker', addGenres, 'toggleAddGenre'); }
     if(info.description) document.getElementById('add-description').value=info.description;
     aiStatus.textContent='✓ Info filled in — check and edit as needed';
     aiStatus.className='done';
@@ -1058,7 +1101,8 @@ async function saveBook() {
     id:Date.now().toString(36)+Math.random().toString(36).slice(2),
     title,
     author:document.getElementById('add-author').value.trim(),
-    genre:document.getElementById('add-genre').value,
+    genres:addGenres,
+    genre:addGenres[0]||null,
     tbr:document.getElementById('add-status').value==='tbr',
     series_name:document.getElementById('add-series-name').value.trim()||null,
     series_order:seriesOrder!==''?parseFloat(seriesOrder):null,
