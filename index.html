@@ -285,38 +285,46 @@
   .shelf-header:hover .shelf-name { color: var(--gold-light); }
   .shelf-name { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; transition: color .15s; }
   .shelf-meta { color: var(--text-muted); font-size: 12px; }
-  .shelf-toggle { color: var(--text-dim); font-size: 18px; transition: transform .2s; }
-  .shelf-toggle.open { transform: rotate(180deg); }
-  .shelf-track-wrap { overflow: hidden; transition: max-height .3s ease; }
-  .shelf-track-wrap.collapsed { max-height: 240px; }
-  .shelf-track-wrap.expanded { max-height: 9999px; }
-  .shelf-track { display: flex; gap: 12px; overflow-x: auto; padding: 0 24px 16px; scroll-behavior: smooth; }
-  .shelf-track::-webkit-scrollbar { height: 4px; }
-  .shelf-track::-webkit-scrollbar-track { background: transparent; }
-  .shelf-track::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .shelf-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; flex-shrink: 0; overflow: hidden; transition: transform .2s, box-shadow .2s, border-color .15s; width: 130px; }
-  .shelf-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.5); transform: translateY(-3px); }
-  .shelf-card.drag-over { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
-  .shelf-card.dragging { opacity: .4; transform: scale(.95); }
-  .shelf-cover { background: var(--bg3); overflow: hidden; padding-top: 150%; position: relative; width: 100%; }
-  .shelf-cover img { height: 100%; left: 0; object-fit: cover; position: absolute; top: 0; width: 100%; }
-  .shelf-cover-placeholder { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; left: 0; padding: 8px; position: absolute; text-align: center; top: 0; width: 100%; }
-  .shelf-cover-placeholder .icon { font-size: 22px; margin-bottom: 4px; }
-  .shelf-cover-placeholder .ptitle { color: #c8b898; font-family: 'Playfair Display', serif; font-size: 10px; line-height: 1.2; }
-  .shelf-card-badge { border-radius: 3px; font-size: 9px; padding: 2px 5px; position: absolute; right: 5px; top: 5px; }
-  .shelf-card-info { padding: 7px 8px 8px; }
-  .shelf-card-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  .shelf-card-author { color: var(--text-muted); font-size: 9px; }
-  .shelf-expand-btn { align-items: center; color: var(--text-dim); cursor: pointer; display: flex; font-size: 12px; gap: 4px; justify-content: center; padding: 8px; transition: color .15s; }
-  .shelf-expand-btn:hover { color: var(--gold); }
+  .shelf-chevron { color: var(--text-dim); font-size: 18px; transition: transform .2s; }
+  .shelf-chevron.open { transform: rotate(180deg); }
+
+  /* Preview row — small covers in a line */
+  .shelf-preview { display: flex; gap: 10px; overflow: hidden; padding: 0 24px 12px; }
+  .shelf-preview-cover { background: var(--bg3); border-radius: 6px; flex-shrink: 0; height: 90px; object-fit: cover; width: 60px; transition: transform .15s; cursor: pointer; }
+  .shelf-preview-cover:hover { transform: translateY(-2px); }
+  .shelf-preview-placeholder { align-items: center; background: var(--bg3); border-radius: 6px; display: flex; flex-shrink: 0; font-size: 18px; height: 90px; justify-content: center; width: 60px; cursor: pointer; }
+  .shelf-preview-placeholder:hover { transform: translateY(-2px); }
+
+  /* Expand button */
+  .shelf-expand-btn { align-items: center; border-top: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 6px; justify-content: center; padding: 10px; transition: all .15s; }
+  .shelf-expand-btn:hover { background: var(--bg2); color: var(--gold); }
+
+  /* Expanded grid */
+  .shelf-grid { display: none; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 12px 24px 16px; }
+  .shelf-grid.open { display: grid; }
+
+  /* Shelf cards in expanded grid — reuse book-card styles */
+  .shelf-book-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,.4); cursor: pointer; overflow: hidden; transition: transform .2s, box-shadow .2s; }
+  .shelf-book-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.6); transform: translateY(-4px); }
+  .shelf-book-card.dragging { opacity: .4; }
+  .shelf-book-card.drag-over { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+  .shelf-book-cover { background: var(--bg3); overflow: hidden; padding-top: 140%; position: relative; width: 100%; }
+  .shelf-book-cover img { height: 100%; left: 0; object-fit: cover; position: absolute; top: 0; width: 100%; }
+  .shelf-book-cover-placeholder { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; left: 0; padding: 10px; position: absolute; text-align: center; top: 0; width: 100%; }
+  .shelf-book-badge { border-radius: 4px; font-size: 10px; letter-spacing: .5px; padding: 3px 7px; position: absolute; right: 8px; top: 8px; }
+  .shelf-book-info { padding: 8px 10px 10px; }
+  .shelf-book-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; }
+  .shelf-book-author { color: var(--text-muted); font-size: 10px; margin-bottom: 4px; }
+  .shelf-book-ratings { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
   #shelf-drag-hint { background: #1a2a1a; border-bottom: 1px solid #2a4a2a; color: var(--text-dim); display: none; font-size: 11px; font-style: italic; padding: 8px 24px; }
   #shelf-rearrange-btn { margin-left: auto; }
 
   @media (max-width: 600px) {
-    .shelf-track { padding: 0 16px 16px; gap: 10px; }
-    .shelf-card { width: 110px; }
     .shelf-header { padding: 0 16px 12px; }
     .shelf-name { font-size: 17px; }
+    .shelf-preview { padding: 0 16px 12px; }
+    .shelf-grid { padding: 12px 16px 16px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
   }
 </style>
 </head>
@@ -925,14 +933,15 @@ function populateGenreFilter() {
 let shelfRearrangeMode = false;
 let shelfDragSrcId = null;
 let shelfDragGenre = null;
-let shelfExpandState = {}; // genre -> true/false
+let shelfExpandState = {}; // genre -> bool
+const SHELF_PREVIEW_COUNT = 6;
 
 // ── Shelf rendering ────────────────────────────────────────────────────────────
 function renderShelves() {
   const container = document.getElementById('shelf-view');
   if (!container) return;
 
-  // Group books by genre, sorted by shelf_positions
+  // Group books by genre
   const genreMap = {};
   books.forEach(b => {
     const genres = getBookGenres(b);
@@ -956,70 +965,95 @@ function renderShelves() {
     });
   });
 
-  // Sort genre names alphabetically, Unshelved last
   const genres = Object.keys(genreMap).sort((a, b) => {
     if (a === 'Unshelved') return 1;
     if (b === 'Unshelved') return -1;
     return a.localeCompare(b);
   });
 
-  if (genres.length === 0) {
+  if (!genres.length) {
     container.innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--text-dim)"><div style="font-size:48px;margin-bottom:16px">📚</div><p>No books yet</p></div>';
     return;
   }
 
   container.innerHTML = genres.map(genre => renderShelf(genre, genreMap[genre])).join('');
-
-  // Attach drag listeners if in rearrange mode
   if (shelfRearrangeMode && isOwner) attachAllShelfDragListeners();
 }
 
 function renderShelf(genre, shelfBooks) {
-  const isExpanded = shelfExpandState[genre] !== false; // default open
-  const coverCards = shelfBooks.map(book => shelfCardHTML(book, genre)).join('');
-  const badge = shelfRearrangeMode && isOwner ? '' : '';
+  const isExpanded = !!shelfExpandState[genre];
+  const previewBooks = shelfBooks.slice(0, SHELF_PREVIEW_COUNT);
+  const remaining = shelfBooks.length - SHELF_PREVIEW_COUNT;
+  const safeGenre = genre.replace(/'/g, "\'");
+
+  // Preview covers row
+  const previewHTML = previewBooks.map(b => {
+    const clickHandler = shelfRearrangeMode ? '' : `onclick="showDetail(books.find(b=>b.id==='${b.id}'))"`;
+    return b.cover_image
+      ? `<img class="shelf-preview-cover" src="${b.cover_image}" alt="${esc(b.title)}" loading="lazy" ${clickHandler} title="${esc(b.title)}">`
+      : `<div class="shelf-preview-placeholder" ${clickHandler} title="${esc(b.title)}">📖</div>`;
+  }).join('');
+
+  // Expanded grid
+  const gridHTML = shelfBooks.map(b => shelfBookCardHTML(b, genre)).join('');
+
+  const expandLabel = isExpanded
+    ? '▲ Show less'
+    : (remaining > 0 ? `▼ Show all ${shelfBooks.length} books` : '▼ Show all');
 
   return `<div class="shelf" id="shelf-${CSS.escape(genre)}">
-    <div class="shelf-header" onclick="toggleShelf('${genre.replace(/'/g, "\'")}')">
+    <div class="shelf-header" onclick="toggleShelf('${safeGenre}')">
       <div>
         <div class="shelf-name">${esc(genre)}</div>
-        <div class="shelf-meta">${shelfBooks.length} book${shelfBooks.length !== 1 ? 's' : ''}</div>
+        <div class="shelf-meta">${shelfBooks.length} book${shelfBooks.length !== 1 ? 's' : ''}${shelfBooks.filter(b=>b.tbr).length > 0 ? ' · ' + shelfBooks.filter(b=>b.tbr).length + ' TBR' : ''}</div>
       </div>
-      <span class="shelf-toggle ${isExpanded ? 'open' : ''}" id="shelf-chevron-${CSS.escape(genre)}">▾</span>
+      <span class="shelf-chevron ${isExpanded ? 'open' : ''}" id="shelf-chevron-${CSS.escape(genre)}">▾</span>
     </div>
-    <div class="shelf-track-wrap ${isExpanded ? 'expanded' : 'collapsed'}" id="shelf-wrap-${CSS.escape(genre)}">
-      <div class="shelf-track" id="shelf-track-${CSS.escape(genre)}">${coverCards}</div>
-    </div>
+    <div class="shelf-preview" id="shelf-preview-${CSS.escape(genre)}" style="${isExpanded ? 'display:none' : ''}">${previewHTML}</div>
+    <div class="shelf-grid ${isExpanded ? 'open' : ''}" id="shelf-grid-${CSS.escape(genre)}">${gridHTML}</div>
+    <div class="shelf-expand-btn" onclick="toggleShelf('${safeGenre}')">${expandLabel}</div>
   </div>`;
 }
 
-function shelfCardHTML(book, genre) {
+function shelfBookCardHTML(book, genre) {
   const coverHTML = book.cover_image
     ? `<img src="${book.cover_image}" alt="${esc(book.title)}" loading="lazy">`
-    : `<div class="shelf-cover-placeholder"><div class="icon">📖</div><div class="ptitle">${esc(book.title || '')}</div></div>`;
+    : `<div class="shelf-book-cover-placeholder"><div style="font-size:24px">📖</div><div style="font-size:10px;color:#c8b898;font-family:'Playfair Display',serif;margin-top:4px;line-height:1.2">${esc(book.title||'')}</div></div>`;
   const badge = book.borrower
-    ? `<span class="shelf-card-badge badge-out">OUT</span>`
-    : book.tbr ? `<span class="shelf-card-badge badge-tbr">TBR</span>` : '';
+    ? `<span class="shelf-book-badge badge-out">OUT</span>`
+    : book.tbr ? `<span class="shelf-book-badge badge-tbr">TBR</span>` : '';
+  const starsHTML = book.rating > 0 ? starsDisplay(book.rating, 11) : '';
+  const spiceHTML = book.spice_rating > 0 ? renderPeppers(book.spice_rating, 11) : '';
+  const doorHTML = book.door_tag ? `<span class="door-tag ${book.door_tag==='Open Door'?'door-open':'door-closed'}" style="font-size:9px;padding:1px 5px">${book.door_tag}</span>` : '';
   const draggable = shelfRearrangeMode && isOwner ? 'draggable="true"' : '';
   const clickHandler = shelfRearrangeMode ? '' : `onclick="showDetail(books.find(b=>b.id==='${book.id}'))"`;
-  return `<div class="shelf-card" data-id="${book.id}" data-genre="${esc(genre)}" ${draggable} ${clickHandler}>
-    <div class="shelf-cover">${coverHTML}${badge}</div>
-    <div class="shelf-card-info">
-      <div class="shelf-card-title">${esc(book.title || 'Untitled')}</div>
-      <div class="shelf-card-author">${esc(book.author || '')}</div>
+
+  return `<div class="shelf-book-card" data-id="${book.id}" data-genre="${esc(genre)}" ${draggable} ${clickHandler}>
+    <div class="shelf-book-cover">${coverHTML}${badge}</div>
+    <div class="shelf-book-info">
+      <div class="shelf-book-title">${esc(book.title || 'Untitled')}</div>
+      <div class="shelf-book-author">${esc(book.author || '')}</div>
+      <div class="shelf-book-ratings">${starsHTML}${spiceHTML}${doorHTML}</div>
     </div>
   </div>`;
 }
 
 function toggleShelf(genre) {
-  const wrap = document.getElementById('shelf-wrap-' + CSS.escape(genre));
+  shelfExpandState[genre] = !shelfExpandState[genre];
+  const isExpanded = shelfExpandState[genre];
+  const preview = document.getElementById('shelf-preview-' + CSS.escape(genre));
+  const grid = document.getElementById('shelf-grid-' + CSS.escape(genre));
   const chevron = document.getElementById('shelf-chevron-' + CSS.escape(genre));
-  if (!wrap) return;
-  const isExpanded = wrap.classList.contains('expanded');
-  wrap.classList.toggle('expanded', !isExpanded);
-  wrap.classList.toggle('collapsed', isExpanded);
-  chevron?.classList.toggle('open', !isExpanded);
-  shelfExpandState[genre] = !isExpanded;
+  const btn = document.querySelector('#shelf-' + CSS.escape(genre) + ' .shelf-expand-btn');
+  const shelf = document.getElementById('shelf-' + CSS.escape(genre));
+  const total = shelf ? shelf.querySelectorAll('.shelf-book-card').length : 0;
+
+  if (preview) preview.style.display = isExpanded ? 'none' : '';
+  if (grid) grid.classList.toggle('open', isExpanded);
+  if (chevron) chevron.classList.toggle('open', isExpanded);
+  if (btn) btn.textContent = isExpanded ? '▲ Show less' : (total > SHELF_PREVIEW_COUNT ? '▼ Show all ' + total + ' books' : '▼ Show all');
+
+  if (isExpanded && shelfRearrangeMode && isOwner) attachAllShelfDragListeners();
 }
 
 // ── Shelf rearrange ────────────────────────────────────────────────────────────
@@ -1034,12 +1068,16 @@ function toggleShelfRearrange() {
   }
   if (hint) hint.style.display = shelfRearrangeMode ? 'block' : 'none';
   renderShelves();
+  // Auto-expand all shelves in rearrange mode
+  if (shelfRearrangeMode) {
+    const genreMap = {};
+    books.forEach(b => getBookGenres(b).forEach(g => genreMap[g] = true));
+    Object.keys(genreMap).forEach(g => { if (!shelfExpandState[g]) toggleShelf(g); });
+  }
 }
 
 function attachAllShelfDragListeners() {
-  document.querySelectorAll('.shelf-card[draggable]').forEach(el => {
-    attachShelfDrag(el);
-  });
+  document.querySelectorAll('.shelf-book-card[draggable]').forEach(el => attachShelfDrag(el));
 }
 
 function attachShelfDrag(el) {
@@ -1059,20 +1097,17 @@ function attachShelfDrag(el) {
     const genre = el.dataset.genre;
     if (shelfDragSrcId === dstId || shelfDragGenre !== genre) return;
 
-    // Get books on this shelf in current order
-    const track = document.getElementById('shelf-track-' + CSS.escape(genre));
-    if (!track) return;
-    const cards = [...track.querySelectorAll('.shelf-card')];
+    const grid = document.getElementById('shelf-grid-' + CSS.escape(genre));
+    if (!grid) return;
+    const cards = [...grid.querySelectorAll('.shelf-book-card')];
     const ids = cards.map(c => c.dataset.id);
     const srcIdx = ids.indexOf(shelfDragSrcId);
     const dstIdx = ids.indexOf(dstId);
     if (srcIdx === -1 || dstIdx === -1) return;
 
-    // Reorder
     ids.splice(srcIdx, 1);
     ids.splice(dstIdx, 0, shelfDragSrcId);
 
-    // Save shelf_positions for this genre
     const updates = ids.map((id, i) => {
       const book = books.find(b => b.id === id);
       if (!book) return null;
@@ -1082,10 +1117,10 @@ function attachShelfDrag(el) {
       return updateBook(id, { shelf_positions: positions });
     }).filter(Boolean);
 
-    // Re-render this shelf immediately
     const genreBooks = ids.map(id => books.find(b => b.id === id)).filter(Boolean);
-    track.innerHTML = genreBooks.map(b => shelfCardHTML(b, genre)).join('');
+    grid.innerHTML = genreBooks.map(b => shelfBookCardHTML(b, genre)).join('');
     attachAllShelfDragListeners();
+    showToast('Order saved!');
 
     try { await Promise.all(updates); }
     catch { showToast('Could not save shelf order', 'error'); }
