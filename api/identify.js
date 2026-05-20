@@ -7,16 +7,13 @@ export default async function handler(req, res) {
 
   try {
     const { image } = req.body;
-    if (!image) return res.status(400).json({ error: 'No image in request body' });
-
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) return res.status(500).json({ error: 'No API key found' });
+    if (!image) return res.status(400).json({ error: 'No image provided' });
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
@@ -26,21 +23,17 @@ export default async function handler(req, res) {
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: image } },
-            { type: 'text', text: `Identify this book cover. Respond ONLY with JSON, no markdown:\n{"title":"","author":"","genre":"Fiction","description":""}` }
+            { type: 'text', text: `Identify this book cover. Respond ONLY with JSON, no markdown:\n{"title":"","author":"","genre":"one of: Fiction, Non-Fiction, Fantasy, Sci-Fi, Mystery, Thriller, Romance, Historical, Biography, Self-Help, Children, Young Adult, Horror, Literary Fiction, Poetry, Romantasy, Other","description":"2-3 sentence description if you recognize the book, otherwise empty string"}` }
           ]
         }]
       })
     });
 
     const data = await response.json();
-    
-    // Return everything so we can see what's happening
-    return res.status(200).json({ 
-      status: response.status,
-      data: data 
-    });
+    const text = data.content?.find(b => b.type === 'text')?.text || '{}';
+    return res.status(200).json(JSON.parse(text.replace(/```json|```/g, '').trim()));
 
   } catch (e) {
-    return res.status(500).json({ error: e.message, stack: e.stack });
+    return res.status(500).json({ error: e.message });
   }
 }
