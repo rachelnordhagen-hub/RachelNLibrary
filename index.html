@@ -35,12 +35,11 @@
   textarea { resize: vertical; }
   select option { background: var(--bg2); }
 
-  /* Multi-select genre picker */
-  .genre-picker { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; padding: 10px; transition: border .15s; }
-  .genre-picker:focus-within { border-color: var(--gold); }
-  .genre-chip { align-items: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 4px; padding: 4px 10px; transition: all .15s; user-select: none; }
-  .genre-chip:hover { border-color: var(--gold); color: var(--gold); }
-  .genre-chip.selected { background: #2a1a3a; border-color: #c090f0; color: #c090f0; font-weight: 700; }
+  /* Multi-select genre */
+  select[multiple] { background: var(--bg2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font-family: 'Lato', sans-serif; font-size: 14px; outline: none; padding: 6px; transition: border .15s; width: 100%; height: 130px; }
+  select[multiple]:focus { border-color: var(--gold); }
+  select[multiple] option { padding: 6px 10px; border-radius: 4px; }
+  select[multiple] option:checked { background: #4a2a6a; color: #e0b0ff; }
   .field-label { color: var(--text-muted); display: block; font-size: 11px; letter-spacing: .8px; margin-bottom: 5px; text-transform: uppercase; }
 
   @keyframes fadeIn { from { opacity:0; transform:translateY(-8px) } to { opacity:1; transform:none } }
@@ -345,10 +344,8 @@
       <div class="form-fields">
         <div class="form-row"><label class="field-label">Title *</label><input type="text" id="add-title" placeholder="Book title"></div>
         <div class="form-row"><label class="field-label">Author</label><input type="text" id="add-author" placeholder="Author name"></div>
-        <div class="form-row"><label class="field-label">Genre</label>
-          <select id="add-genre">
-            <option>Fiction</option><option>Non-Fiction</option><option>Fantasy</option><option>Sci-Fi</option><option>Mystery</option><option>Thriller</option><option>Romance</option><option>Historical</option><option>Biography</option><option>Self-Help</option><option>Children</option><option>Young Adult</option><option>Horror</option><option>Literary Fiction</option><option>Poetry</option><option>Romantasy</option><option>Other</option>
-          </select>
+        <div class="form-row"><label class="field-label">Genres (hold Ctrl/Cmd on desktop, tap on mobile)</label>
+          <div id="add-genre-picker"></div>
         </div>
         <div class="form-row"><label class="field-label">Reading Status</label>
           <select id="add-status" onchange="document.getElementById('add-rating-row').style.display=this.value==='tbr'?'none':''"><option value="read">Read</option><option value="tbr">To Be Read (TBR)</option></select>
@@ -424,23 +421,31 @@ function getBookGenres(book) {
   return [];
 }
 
-function renderGenrePicker(containerId, selectedGenres, onToggleFn) {
+function renderGenrePicker(containerId, selectedGenres) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  container.innerHTML = ALL_GENRES.map(g => `<span class="genre-chip ${selectedGenres.includes(g) ? 'selected' : ''}" onclick="${onToggleFn}('${g}','${containerId}')">${g}</span>`).join('');
+  container.innerHTML = '';
+  const sel = document.createElement('select');
+  sel.multiple = true;
+  sel.style.cssText = 'width:100%;height:130px;background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:6px;font-family:Lato,sans-serif;font-size:14px;padding:4px;';
+  ALL_GENRES.forEach(g => {
+    const opt = document.createElement('option');
+    opt.value = g;
+    opt.textContent = g;
+    opt.selected = selectedGenres.includes(g);
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', () => {
+    const isAdd = containerId === 'add-genre-picker';
+    const arr = [...sel.selectedOptions].map(o => o.value);
+    if (isAdd) { addGenres.length = 0; arr.forEach(g => addGenres.push(g)); }
+    else { editGenres.length = 0; arr.forEach(g => editGenres.push(g)); }
+  });
+  container.appendChild(sel);
 }
 
-function toggleAddGenre(genre) {
-  if (addGenres.includes(genre)) { addGenres = addGenres.filter(g => g !== genre); }
-  else { addGenres.push(genre); }
-  renderGenrePicker('add-genre-picker', addGenres, 'toggleAddGenre');
-}
-
-function toggleEditGenre(genre) {
-  if (editGenres.includes(genre)) { editGenres = editGenres.filter(g => g !== genre); }
-  else { editGenres.push(genre); }
-  renderGenrePicker('edit-genre-picker', editGenres, 'toggleEditGenre');
-}
+function toggleAddGenre(genre) {}
+function toggleEditGenre(genre) {}
 
 async function loadBooks() { return dbFetch('books?order=sort_order.asc,added_at.desc'); }
 async function insertBook(b) { return dbFetch('books', {method:'POST',body:JSON.stringify(b)}); }
@@ -751,7 +756,7 @@ function showView(id) {
   window.scrollTo(0,0);
 }
 function showLibrary() { showView('view-library'); filterBooks(); }
-function showAdd() { resetAddForm(); showView('view-add'); setTimeout(() => { renderGenrePicker('add-genre-picker', addGenres, 'toggleAddGenre'); renderAddStars(); }, 50); }
+function showAdd() { resetAddForm(); showView('view-add'); setTimeout(() => { renderGenrePicker('add-genre-picker', addGenres); renderAddStars(); }, 50); }
 
 function updateOwnerUI() {
   document.getElementById('btn-add-book').style.display = isOwner?'':'none';
@@ -1006,7 +1011,7 @@ function showEditDetail() {
       <div class="form-row"><label class="field-label">Notes</label><textarea id="e-notes" rows="2">${esc(b.notes||'')}</textarea></div>
       <div class="form-actions"><button class="btn btn-primary" onclick="saveEditDetail()">Save Changes</button><button class="btn btn-ghost" onclick="showDetail(currentBook)">Cancel</button></div>
     </div>`;
-  setTimeout(() => renderGenrePicker('edit-genre-picker', editGenres, 'toggleEditGenre'), 50);
+  setTimeout(() => renderGenrePicker('edit-genre-picker', editGenres), 50);
 }
 
 async function saveEditDetail() {
@@ -1033,6 +1038,8 @@ async function saveEditDetail() {
 
 // ── Add book ──────────────────────────────────────────────────────────────────
 function resetAddForm() {
+  const picker = document.getElementById('add-genre-picker');
+  if (picker) picker._listenerAttached = false;
   addGenres = [];
   coverBase64=null;
   document.getElementById('cover-preview').style.display='none';
@@ -1061,7 +1068,7 @@ async function handleCoverUpload(event) {
     const info=await identifyBook(dataUrl.split(',')[1]);
     if(info.title) document.getElementById('add-title').value=info.title;
     if(info.author) document.getElementById('add-author').value=info.author;
-    if(info.genre && ALL_GENRES.includes(info.genre)) { addGenres=[info.genre]; renderGenrePicker('add-genre-picker', addGenres, 'toggleAddGenre'); }
+    if(info.genre && ALL_GENRES.includes(info.genre)) { addGenres=[info.genre]; renderGenrePicker('add-genre-picker', addGenres); }
     if(info.description) document.getElementById('add-description').value=info.description;
     aiStatus.textContent='✓ Info filled in — check and edit as needed';
     aiStatus.className='done';
