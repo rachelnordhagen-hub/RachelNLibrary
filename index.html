@@ -299,6 +299,9 @@
   .shelf-expand-btn { align-items: center; border-top: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 6px; justify-content: center; padding: 10px; transition: all .15s; }
   .shelf-expand-btn:hover { background: var(--bg2); color: var(--gold); }
 
+  /* Preview grid — capped height, same card size as full grid */
+  .shelf-preview-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-height: 268px; overflow: hidden; padding: 0 24px 12px; }
+
   /* Expanded grid */
   .shelf-grid { display: none; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 16px; }
   .shelf-grid.open { display: grid; }
