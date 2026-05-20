@@ -299,8 +299,8 @@
   .shelf-expand-btn { align-items: center; border-top: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 6px; justify-content: center; padding: 10px; transition: all .15s; }
   .shelf-expand-btn:hover { background: var(--bg2); color: var(--gold); }
 
-  /* Preview grid — capped height, same card size as full grid */
-  .shelf-preview-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-height: 268px; overflow: hidden; padding: 0 24px 12px; }
+  /* Preview grid — same as full grid, JS limits to first row of cards */
+  .shelf-preview-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 12px; }
 
   /* Expanded grid */
   .shelf-grid { display: none; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 16px; }
@@ -986,8 +986,13 @@ function renderShelves() {
 function renderShelf(genre, shelfBooks) {
   const isExpanded = !!shelfExpandState[genre];
   const safeGenre = genre.replace(/'/g, "\'");
+  // Calculate how many cards fit in one row based on container width
+  const containerWidth = (document.getElementById('shelf-view') || document.body).offsetWidth - 48;
+  const cardWidth = 166; // 150px min + 16px gap
+  const perRow = Math.max(1, Math.floor(containerWidth / cardWidth));
+  const previewBooks = shelfBooks.slice(0, perRow);
   const allCardsHTML = shelfBooks.map(b => shelfBookCardHTML(b, genre)).join('');
-  const hasMore = shelfBooks.length > 0;
+  const previewCardsHTML = previewBooks.map(b => shelfBookCardHTML(b, genre)).join('');
   const expandLabel = isExpanded ? '▲ Show less' : `▼ Show all ${shelfBooks.length} books`;
 
   return `<div class="shelf" id="shelf-${CSS.escape(genre)}">
@@ -998,7 +1003,7 @@ function renderShelf(genre, shelfBooks) {
       </div>
       <span class="shelf-chevron ${isExpanded ? 'open' : ''}" id="shelf-chevron-${CSS.escape(genre)}">▾</span>
     </div>
-    <div class="shelf-preview-grid" id="shelf-preview-${CSS.escape(genre)}" style="${isExpanded ? 'display:none' : ''}">${allCardsHTML}</div>
+    <div class="shelf-preview-grid" id="shelf-preview-${CSS.escape(genre)}" style="${isExpanded ? 'display:none' : ''}">${previewCardsHTML}</div>
     <div class="shelf-grid ${isExpanded ? 'open' : ''}" id="shelf-grid-${CSS.escape(genre)}">${allCardsHTML}</div>
     <div class="shelf-expand-btn" onclick="toggleShelf('${safeGenre}')">${expandLabel}</div>
   </div>`;
