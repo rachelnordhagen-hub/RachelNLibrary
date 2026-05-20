@@ -342,7 +342,7 @@
           </select>
         </div>
         <div class="form-row"><label class="field-label">Reading Status</label>
-          <select id="add-status"><option value="read">Read</option><option value="tbr">To Be Read (TBR)</option></select>
+          <select id="add-status" onchange="document.getElementById('add-rating-row').style.display=this.value==='tbr'?'none':''"><option value="read">Read</option><option value="tbr">To Be Read (TBR)</option></select>
         </div>
         <div class="form-row"><label class="field-label">Part of a Series?</label>
           <input type="text" id="add-series-name" placeholder="Series name (e.g. Wheel of Time)">
@@ -352,6 +352,7 @@
         </div>
         <div class="form-row"><label class="field-label">Description</label><textarea id="add-description" rows="3" placeholder="Brief description…"></textarea></div>
         <div class="form-row"><label class="field-label">Personal Notes</label><textarea id="add-notes" rows="2" placeholder="Your thoughts, shelf location, etc…"></textarea></div>
+        <div class="form-row" id="add-rating-row"><label class="field-label">Your Rating (optional)</label><div id="add-stars" style="display:flex;gap:4px;margin-top:4px"></div></div>
         <div class="form-actions">
           <button class="btn btn-primary" id="btn-save-book" onclick="saveBook()">Add to Library</button>
           <button class="btn btn-ghost" onclick="showLibrary()">Cancel</button>
@@ -391,6 +392,7 @@ let currentTab = 'all';
 let currentSort = localStorage.getItem('lib-sort') || 'custom';
 let dragMode = false;
 let dragSrcId = null;
+let addRating = 0;
 
 // ── Supabase ──────────────────────────────────────────────────────────────────
 async function dbFetch(path, opts={}) {
@@ -712,7 +714,7 @@ function showView(id) {
   window.scrollTo(0,0);
 }
 function showLibrary() { showView('view-library'); filterBooks(); }
-function showAdd() { resetAddForm(); showView('view-add'); }
+function showAdd() { resetAddForm(); showView('view-add'); setTimeout(renderAddStars, 50); }
 
 function updateOwnerUI() {
   document.getElementById('btn-add-book').style.display = isOwner?'':'none';
@@ -821,6 +823,13 @@ function bookCardHTML(book,i) {
 }
 
 // ── Stars ─────────────────────────────────────────────────────────────────────
+function renderAddStars() {
+  const row = document.getElementById('add-stars');
+  if (!row) return;
+  row.innerHTML = [1,2,3,4,5].map(n => `<span onclick="setAddRating(${addRating===n?0:n})" style="cursor:pointer"><svg width="28" height="28" viewBox="0 0 24 24" fill="${addRating>=n?'#e8a838':'none'}" stroke="${addRating>=n?'#e8a838':'#888'}" stroke-width="1.8" style="transition:all .15s;display:block"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span>`).join('');
+}
+function setAddRating(r) { addRating=r; renderAddStars(); }
+
 function starsDisplay(value,size=20) {
   return `<div class="stars">${[1,2,3,4,5].map(n=>`<span class="star"><svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${value>=n?'#e8a838':'none'}" stroke="${value>=n?'#e8a838':'#888'}" stroke-width="1.8"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span>`).join('')}</div>`;
 }
@@ -992,6 +1001,7 @@ function resetAddForm() {
   document.getElementById('ai-status').textContent='';
   document.getElementById('ai-status').className='';
   document.getElementById('cover-file').value='';
+  addRating=0; renderAddStars();
 }
 
 async function handleCoverUpload(event) {
@@ -1033,13 +1043,10 @@ function resizeImage(file,maxSize) {
 }
 
 async function identifyBook(base64) {
-  const response = await fetch('/api/identify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ image: base64 })
-  });
-  if (!response.ok) throw new Error('API error');
-  return await response.json();
+  const response=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:base64}},{type:'text',text:`Identify this book cover. Respond ONLY with JSON, no markdown:\n{"title":"","author":"","genre":"one of: Fiction, Non-Fiction, Fantasy, Sci-Fi, Mystery, Thriller, Romance, Historical, Biography, Self-Help, Children, Young Adult, Horror, Literary Fiction, Poetry, Romantasy, Other","description":"2-3 sentence description if you recognize the book, otherwise empty string"}`}]}]})});
+  const data=await response.json();
+  const text=data.content?.find(b=>b.type==='text')?.text||'{}';
+  return JSON.parse(text.replace(/```json|```/g,'').trim());
 }
 
 async function saveBook() {
@@ -1059,7 +1066,7 @@ async function saveBook() {
     description:document.getElementById('add-description').value.trim(),
     notes:document.getElementById('add-notes').value.trim(),
     cover_image:coverBase64||null,
-    rating:0,borrower:null,borrowed_at:null,added_at:Date.now(),sort_order:0
+    rating:addRating,borrower:null,borrowed_at:null,added_at:Date.now(),sort_order:0
   };
   try {
     await insertBook(book);
