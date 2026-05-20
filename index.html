@@ -296,11 +296,11 @@
   .shelf-preview-placeholder:hover { transform: translateY(-2px); }
 
   /* Expand button */
-  .shelf-expand-btn { align-items: center; border-top: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 6px; justify-content: center; padding: 10px; transition: all .15s; }
-  .shelf-expand-btn:hover { background: var(--bg2); color: var(--gold); }
+  .shelf-expand-btn { align-items: center; border-top: 1px solid var(--border); clear: both; color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 6px; justify-content: flex-end; padding: 8px 24px; transition: all .15s; width: 100%; }
+  .shelf-expand-btn:hover { color: var(--gold); }
 
   /* Preview grid — same as full grid, JS limits to first row of cards */
-  .shelf-preview-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 12px; }
+  .shelf-preview-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 0; }
 
   /* Expanded grid */
   .shelf-grid { display: none; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 16px; }
