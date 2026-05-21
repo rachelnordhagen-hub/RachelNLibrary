@@ -1267,9 +1267,8 @@ function renderTwoShelves() {
 
   if (dragMode && isOwner) {
     container.querySelectorAll('.book-card').forEach(el => {
+      el.removeAttribute('onclick');
       setupDrag(el, el.dataset.id);
-      el.onclick = null;
-      el.setAttribute('draggable', 'true');
     });
   }
 }
