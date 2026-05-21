@@ -1277,31 +1277,7 @@ function renderSimpleShelf(title, shelfBooks, shelfId) {
     </div>`;
   }
 
-  const cardsHTML = shelfBooks.map((book, i) => {
-    const bGenres = getBookGenres(book);
-    const coverHTML = book.cover_image
-      ? `<img src="${book.cover_image}" alt="${esc(book.title)}" loading="lazy">`
-      : `<div class="book-cover-placeholder"><div class="icon">📖</div><div class="ptitle">${esc(book.title||'')}</div></div>`;
-    const badge = book.borrower
-      ? `<span class="book-badge badge-out">OUT</span>`
-      : '';
-    const starsHTML = book.rating > 0 ? starsDisplay(book.rating, 12) : '';
-    const spiceRow = book.spice_rating > 0 ? renderPeppers(book.spice_rating, 11) : '';
-    const doorRow = book.door_tag ? '<span class="door-tag ' + (book.door_tag==='Open Door'?'door-open':'door-closed') + '" style="font-size:9px;padding:1px 5px">' + book.door_tag + '</span>' : '';
-    const genresHTML = bGenres.length ? `<div class="book-genres">${bGenres.map(g=>`<span class="book-genre-tag">${esc(g)}</span>`).join('')}</div>` : '';
-    const seriesHTML = book.series_name ? `<div class="book-series-tag">#${book.series_order??'?'} in ${esc(book.series_name)}</div>` : '';
-    const spiceAndDoor = (spiceRow||doorRow) ? '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">' + spiceRow + doorRow + '</div>' : '';
-
-    return `<div class="book-card" onclick="showDetail(books.find(b=>b.id==='${book.id}'))" style="animation:slideUp .3s ease both;animation-delay:${i*15}ms">
-      <div class="book-cover">${coverHTML}${badge}</div>
-      <div class="book-info">
-        <div class="book-title">${esc(book.title||'Untitled')}</div>
-        <div class="book-author">${esc(book.author||'Unknown author')}</div>
-        ${genresHTML}${seriesHTML}
-        <div style="display:flex;flex-direction:column;gap:3px;margin-top:2px">${starsHTML}${spiceAndDoor}</div>
-      </div>
-    </div>`;
-  }).join('');
+  const cardsHTML = shelfBooks.map((book, i) => bookCardHTML(book, i)).join('');
 
   return `<div class="two-shelf">
     <div class="two-shelf-header">
