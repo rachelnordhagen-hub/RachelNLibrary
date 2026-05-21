@@ -296,8 +296,8 @@
   .shelf-preview-placeholder:hover { transform: translateY(-2px); }
 
   /* Expand button */
-  .shelf-expand-btn { align-items: center; border-top: 1px solid var(--border); clear: both; color: var(--text-muted); cursor: pointer; display: flex; font-size: 12px; gap: 6px; justify-content: flex-end; padding: 8px 24px; transition: all .15s; width: 100%; }
-  .shelf-expand-btn:hover { color: var(--gold); }
+  .shelf-expand-btn { align-items: center; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; color: var(--gold); cursor: pointer; display: flex; font-size: 13px; font-weight: 700; gap: 6px; justify-content: center; margin: 8px 24px 16px; padding: 10px; transition: all .15s; }
+  .shelf-expand-btn:hover { background: var(--bg3); border-color: var(--gold); }
 
   /* Preview grid — same as full grid, JS limits to first row of cards */
   .shelf-preview-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 0 24px 0; }
@@ -410,7 +410,7 @@
     <div id="drag-hint-bar" style="display:none;padding:8px 24px;background:#1a2a1a;border-bottom:1px solid #2a4a2a;">
       <span style="color:var(--text-dim);font-size:11px;font-style:italic">✥ Drag books to reorder — saves automatically. <button onclick="toggleDragMode()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;text-decoration:underline">Done</button></span>
     </div>
-    <div id="shelf-drag-hint">✥ Drag books within a shelf to reorder — saves automatically. <button onclick="toggleShelfRearrange()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;text-decoration:underline">Done</button></div>
+
     <div id="loading" class="spinner"></div>
     <div id="shelf-view" style="display:none"></div>
     <div id="grid" style="display:none"></div>
@@ -1131,29 +1131,9 @@ function filterBooks() {
   const hasFilters=q||genre||status;
   document.getElementById('btn-clear-filters').style.display=hasFilters?'':'none';
 
-  // All Books tab with no filters = shelf view
-  const useShelf = currentTab === 'all' && !hasFilters;
+  // Always use grid view
   const shelfView = document.getElementById('shelf-view');
-  const gridView = document.getElementById('grid');
-  const sortBar = document.getElementById('sort-bar');
-  const shelfBtn = document.getElementById('shelf-rearrange-btn');
-  const dragToggle = document.getElementById('drag-toggle');
-
-  if (useShelf) {
-    if (shelfView) shelfView.style.display = 'block';
-    if (gridView) gridView.style.display = 'none';
-    if (sortBar) sortBar.style.display = 'none';
-    if (shelfBtn) shelfBtn.style.display = isOwner ? '' : 'none';
-    if (dragToggle) dragToggle.style.display = 'none';
-    document.getElementById('empty').style.display = 'none';
-    document.getElementById('loading').style.display = 'none';
-    renderShelves();
-    return;
-  } else {
-    if (shelfView) shelfView.style.display = 'none';
-    if (sortBar) sortBar.style.display = '';
-    if (shelfBtn) shelfBtn.style.display = 'none';
-  }
+  if (shelfView) shelfView.style.display = 'none';
 
   let list=books;
   if (currentTab==='read') list=books.filter(b=>!b.tbr);
