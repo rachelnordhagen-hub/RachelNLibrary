@@ -1020,7 +1020,7 @@ function updateOwnerUI() {
   document.getElementById('btn-owner-login').style.display = isOwner?'none':'';
   document.getElementById('btn-owner-logout').style.display = isOwner?'':'none';
   const dt = document.getElementById('drag-toggle');
-  if (dt) dt.style.display = (isOwner&&currentSort==='custom'&&currentTab!=='all')?'':'none';
+  if (dt) dt.style.display = (isOwner&&currentSort==='custom')?'':'none';
 }
 
 function ownerLogin() {
