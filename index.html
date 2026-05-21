@@ -1264,6 +1264,14 @@ function renderTwoShelves() {
   container.innerHTML =
     renderSimpleShelf('📖 Read', readBooks, 'read') +
     renderSimpleShelf('📋 To Be Read', tbrBooks, 'tbr');
+
+  if (dragMode && isOwner) {
+    container.querySelectorAll('.book-card').forEach(el => {
+      setupDrag(el, el.dataset.id);
+      el.onclick = null;
+      el.setAttribute('draggable', 'true');
+    });
+  }
 }
 
 function renderSimpleShelf(title, shelfBooks, shelfId) {
