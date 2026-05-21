@@ -347,7 +347,7 @@
 
   /* ── Multi-select rearrange ───────────────────────────────────── */
   .book-card .select-check { display: none; position: absolute; top: 8px; left: 8px; z-index: 10; }
-  #grid.drag-mode .book-card .select-check { display: block; }
+  .drag-active .book-card .select-check { display: block; }
   .select-check input[type=checkbox] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--gold); }
   .book-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
   #multi-action-bar { background: var(--bg2); border-top: 1px solid var(--border); bottom: 0; display: none; gap: 10px; align-items: center; flex-wrap: wrap; left: 0; padding: 12px 24px; position: fixed; right: 0; z-index: 200; box-shadow: 0 -4px 20px rgba(0,0,0,.4); }
@@ -777,7 +777,9 @@ function toggleDragMode() {
   const grid = document.getElementById('grid');
   const hint = document.getElementById('drag-hint-bar');
   const btn = document.getElementById('drag-toggle');
+  const tabBooks = document.getElementById('tab-books');
   grid.classList.toggle('drag-mode', dragMode);
+  if (tabBooks) tabBooks.classList.toggle('drag-active', dragMode);
   hint.style.display = dragMode ? 'block' : 'none';
   btn.textContent = dragMode ? '✓ Done' : '✥ Rearrange';
   btn.classList.toggle('btn-primary', dragMode);
