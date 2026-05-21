@@ -344,6 +344,16 @@
     .two-shelf-header { padding: 0 16px 12px; }
     .two-shelf-title { font-size: 20px; }
   }
+
+  /* ── Multi-select rearrange ───────────────────────────────────── */
+  .book-card .select-check { display: none; position: absolute; top: 8px; left: 8px; z-index: 10; }
+  #grid.drag-mode .book-card .select-check { display: block; }
+  .select-check input[type=checkbox] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--gold); }
+  .book-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+  #multi-action-bar { background: var(--bg2); border-top: 1px solid var(--border); bottom: 0; display: none; gap: 10px; align-items: center; flex-wrap: wrap; left: 0; padding: 12px 24px; position: fixed; right: 0; z-index: 200; box-shadow: 0 -4px 20px rgba(0,0,0,.4); }
+  #multi-action-bar.visible { display: flex; }
+  #multi-select-count { color: var(--gold); font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 700; margin-right: 4px; }
+  #multi-action-bar select { flex: 1; max-width: 260px; min-width: 140px; }
 </style>
 </head>
 <body>
@@ -461,6 +471,17 @@
   </div>
 </div>
 
+<!-- Multi-select action bar -->
+<div id="multi-action-bar">
+  <span id="multi-select-count">0 selected</span>
+  <button class="btn btn-primary btn-sm" onclick="multiMoveTop()">↑ Move to Top</button>
+  <button class="btn btn-primary btn-sm" onclick="multiMoveBottom()">↓ Move to Bottom</button>
+  <select id="multi-move-after" onchange="multiMoveAfter(this.value)">
+    <option value="">Move after…</option>
+  </select>
+  <button class="btn btn-ghost btn-sm" onclick="clearSelection()">Clear</button>
+</div>
+
 <!-- REQUESTS VIEW -->
 <div id="view-requests" class="view">
   <div class="view-inner">
@@ -543,6 +564,7 @@ let currentTab = 'all';
 let currentSort = localStorage.getItem('lib-sort') || 'custom';
 let dragMode = false;
 let dragSrcId = null;
+let selectedBooks = new Set();
 let addRating = 0;
 let addSpice = 0;
 let addGenres = [];
@@ -634,6 +656,95 @@ async function refreshRequestsBadge() {
   } catch {}
 }
 
+
+// ── Multi-select ──────────────────────────────────────────────────────────────
+function toggleBookSelect(id) {
+  if (selectedBooks.has(id)) { selectedBooks.delete(id); }
+  else { selectedBooks.add(id); }
+  updateMultiActionBar();
+  // Update just this card's appearance without full re-render
+  const el = document.querySelector(`.book-card[data-id="${id}"]`);
+  if (el) {
+    el.classList.toggle('selected', selectedBooks.has(id));
+    const cb = el.querySelector('input[type=checkbox]');
+    if (cb) cb.checked = selectedBooks.has(id);
+  }
+}
+
+function updateMultiActionBar() {
+  const bar = document.getElementById('multi-action-bar');
+  const count = document.getElementById('multi-select-count');
+  const sel = document.getElementById('multi-move-after');
+  if (!bar) return;
+  if (selectedBooks.size > 0 && dragMode) {
+    bar.classList.add('visible');
+    count.textContent = selectedBooks.size + ' selected';
+    // Populate move-after dropdown with unselected books in current order
+    const unselected = sortBooks(books.filter(b => !selectedBooks.has(b.id)));
+    sel.innerHTML = '<option value="">Move after…</option>' +
+      unselected.map(b => `<option value="${b.id}">${b.title}</option>`).join('');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function clearSelection() {
+  selectedBooks.clear();
+  updateMultiActionBar();
+  filterBooks();
+}
+
+function multiMoveTop() {
+  if (!selectedBooks.size) return;
+  const selected = [];
+  const rest = [];
+  sortBooks(books).forEach(b => {
+    if (selectedBooks.has(b.id)) selected.push(b);
+    else rest.push(b);
+  });
+  const newOrder = [...selected, ...rest];
+  applyNewOrder(newOrder);
+}
+
+function multiMoveBottom() {
+  if (!selectedBooks.size) return;
+  const selected = [];
+  const rest = [];
+  sortBooks(books).forEach(b => {
+    if (selectedBooks.has(b.id)) selected.push(b);
+    else rest.push(b);
+  });
+  const newOrder = [...rest, ...selected];
+  applyNewOrder(newOrder);
+}
+
+function multiMoveAfter(afterId) {
+  if (!afterId || !selectedBooks.size) return;
+  const selected = [];
+  const rest = [];
+  sortBooks(books).forEach(b => {
+    if (selectedBooks.has(b.id)) selected.push(b);
+    else rest.push(b);
+  });
+  const insertIdx = rest.findIndex(b => b.id === afterId);
+  if (insertIdx === -1) return;
+  rest.splice(insertIdx + 1, 0, ...selected);
+  applyNewOrder(rest);
+  document.getElementById('multi-move-after').value = '';
+}
+
+async function applyNewOrder(newOrder) {
+  newOrder.forEach((b, i) => { b.sort_order = i; });
+  books = newOrder;
+  selectedBooks.clear();
+  updateMultiActionBar();
+  filterBooks();
+  showToast('Order saved!');
+  try {
+    await Promise.all(newOrder.map((b, i) => updateBook(b.id, { sort_order: i })));
+  } catch { showToast('Could not save order', 'error'); }
+}
+
 // ── Sort ──────────────────────────────────────────────────────────────────────
 function setSort(key, doFilter=true) {
   currentSort = key;
@@ -662,6 +773,7 @@ function sortBooks(list) {
 // ── Drag ──────────────────────────────────────────────────────────────────────
 function toggleDragMode() {
   dragMode = !dragMode;
+  if (!dragMode) { selectedBooks.clear(); updateMultiActionBar(); }
   const grid = document.getElementById('grid');
   const hint = document.getElementById('drag-hint-bar');
   const btn = document.getElementById('drag-toggle');
@@ -1276,9 +1388,11 @@ function bookCardHTML(book,i) {
   }
   const bGenres = getBookGenres(book);
   const genresHTML = bGenres.length ? `<div class="book-genres">${bGenres.map(g=>`<span class="book-genre-tag">${esc(g)}</span>`).join('')}</div>` : '';
-  const clickHandler=dragMode?'':`onclick="showDetail(books.find(b=>b.id==='${book.id}'))"`;
-  return `<div class="book-card" data-id="${book.id}" ${clickHandler} style="animation:slideUp .3s ease both;animation-delay:${i*20}ms">
-    <div class="book-cover">${coverHTML}${badge}${handle}</div>
+  const clickHandler=dragMode?`onclick="toggleBookSelect('${book.id}')"`:`onclick="showDetail(books.find(b=>b.id==='${book.id}'))"`;
+  const checkHTML = dragMode ? `<span class="select-check"><input type="checkbox" ${selectedBooks.has(book.id)?'checked':''} onclick="event.stopPropagation();toggleBookSelect('${book.id}')" /></span>` : '';
+  const selectedClass = selectedBooks.has(book.id) ? ' selected' : '';
+  return `<div class="book-card${selectedClass}" data-id="${book.id}" ${clickHandler} style="animation:slideUp .3s ease both;animation-delay:${i*20}ms">
+    <div class="book-cover">${coverHTML}${badge}${handle}${checkHTML}</div>
     <div class="book-info">
       <div class="book-title">${esc(book.title||'Untitled')}</div>
       <div class="book-author">${esc(book.author||'Unknown author')}</div>
