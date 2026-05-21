@@ -1208,8 +1208,11 @@ function filterBooks() {
   // All Books tab = two sections (Read + TBR)
   const shelfView = document.getElementById('shelf-view');
 
+  const sortBar = document.getElementById('sort-bar');
+
   if (currentTab === 'all' && !hasFilters) {
     if (shelfView) shelfView.style.display = 'block';
+    if (sortBar) sortBar.style.display = 'none';
     document.getElementById('grid').style.display = 'none';
     document.getElementById('empty').style.display = 'none';
     document.getElementById('loading').style.display = 'none';
@@ -1217,6 +1220,7 @@ function filterBooks() {
     return;
   } else {
     if (shelfView) shelfView.style.display = 'none';
+    if (sortBar) sortBar.style.display = '';
   }
 
   let list=books;
