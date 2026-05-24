@@ -1195,11 +1195,11 @@ function renderCurrentlyReading() {
     const book = books.find(b => b.id === cr.book_id);
     if (!book) return '';
     const cover = book.cover_image
-      ? `<img class="cr-cover" src="${book.cover_image}" alt="${esc(book.title)}">`
-      : `<div class="cr-cover-placeholder">📖</div>`;
-    const removeBtn = isOwner ? `<button class="cr-remove" onclick="removeCurrentlyReading('${cr.id}');event.stopPropagation()">✕</button>` : '';
+      ? `<img src="${book.cover_image}" alt="${esc(book.title)}" style="height:100%;left:0;object-fit:cover;position:absolute;top:0;width:100%">`
+      : `<div class="cr-cover-placeholder"><div style="font-size:20px">📖</div></div>`;
+    const removeBtn = isOwner ? `<button class="cr-remove" onclick="removeCurrentlyReading('${cr.id}');event.stopPropagation()">✕ Remove</button>` : '';
     return `<div class="cr-card" onclick="showDetail(books.find(b=>b.id==='${book.id}'))">
-      ${cover}
+      <div class="cr-cover-wrap">${cover}</div>
       <div class="cr-info">
         <div class="cr-title">${esc(book.title)}</div>
         <div class="cr-author">${esc(book.author||'')}</div>
