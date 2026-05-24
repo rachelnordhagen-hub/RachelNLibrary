@@ -354,6 +354,62 @@
   #multi-action-bar.visible { display: flex; }
   #multi-select-count { color: var(--gold); font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 700; margin-right: 4px; }
   #multi-action-bar select { flex: 1; max-width: 260px; min-width: 140px; }
+
+  /* ── Hero section ─────────────────────────────────────────────── */
+  #hero-section { border-bottom: 1px solid var(--border); padding: 24px; display: none; }
+  #hero-section.loaded { display: block; }
+
+  /* Currently Reading */
+  .hero-label { color: var(--text-muted); font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 12px; text-transform: uppercase; }
+  #currently-reading-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .cr-card { align-items: flex-start; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; display: flex; gap: 14px; overflow: hidden; padding: 14px; transition: box-shadow .2s, transform .2s; flex: 1; min-width: 240px; max-width: 420px; position: relative; }
+  .cr-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,.5); transform: translateY(-2px); }
+  .cr-cover { border-radius: 6px; flex-shrink: 0; height: 90px; object-fit: cover; width: 60px; }
+  .cr-cover-placeholder { align-items: center; background: var(--bg3); border-radius: 6px; display: flex; flex-shrink: 0; font-size: 20px; height: 90px; justify-content: center; width: 60px; }
+  .cr-info { flex: 1; min-width: 0; }
+  .cr-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+  .cr-author { color: var(--text-muted); font-size: 12px; margin-bottom: 6px; }
+  .cr-badge { background: #1a3a2a; border: 1px solid #2a5a3a; border-radius: 20px; color: #70c090; display: inline-block; font-size: 10px; letter-spacing: .5px; padding: 2px 8px; text-transform: uppercase; }
+  .cr-remove { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 2px 4px; position: absolute; right: 8px; top: 8px; transition: color .15s; }
+  .cr-remove:hover { color: #c06060; }
+  .cr-add-btn { align-items: center; background: var(--bg2); border: 1px dashed var(--border); border-radius: 12px; color: var(--text-dim); cursor: pointer; display: flex; flex-direction: column; font-size: 13px; gap: 6px; justify-content: center; min-height: 118px; min-width: 200px; padding: 14px; transition: all .15s; flex: 1; max-width: 420px; }
+  .cr-add-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Monthly Picks */
+  #picks-row { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
+  .pick-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; overflow: hidden; position: relative; transition: box-shadow .2s, transform .2s; }
+  .pick-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,.5); transform: translateY(-3px); }
+  .pick-cover-wrap { padding-top: 140%; position: relative; width: 100%; background: var(--bg3); }
+  .pick-cover-wrap img { height: 100%; left: 0; object-fit: cover; position: absolute; top: 0; width: 100%; }
+  .pick-cover-placeholder { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; left: 0; padding: 10px; position: absolute; text-align: center; top: 0; width: 100%; }
+  .pick-info { padding: 10px 12px 12px; }
+  .pick-title { color: var(--text); font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; }
+  .pick-author { color: var(--text-muted); font-size: 11px; }
+  .pick-remove { background: #7a2020cc; border: none; border-radius: 3px; color: #ffb0b0; cursor: pointer; font-size: 10px; padding: 2px 6px; position: absolute; right: 6px; top: 6px; transition: background .15s; }
+  .pick-remove:hover { background: #aa2020cc; }
+  .pick-add-slot { align-items: center; background: var(--bg2); border: 1px dashed var(--border); border-radius: 10px; cursor: pointer; display: flex; flex-direction: column; font-size: 12px; gap: 6px; justify-content: center; min-height: 180px; color: var(--text-dim); transition: all .15s; }
+  .pick-add-slot:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Book picker modal */
+  #book-picker-modal .modal-inner { max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
+  #book-picker-list { flex: 1; overflow-y: auto; margin-top: 12px; }
+  #book-picker-search { margin-bottom: 4px; }
+  .book-picker-item { align-items: center; border-radius: 8px; cursor: pointer; display: flex; gap: 12px; padding: 10px; transition: background .15s; }
+  .book-picker-item:hover { background: var(--bg3); }
+  .book-picker-thumb { border-radius: 4px; flex-shrink: 0; height: 48px; object-fit: cover; width: 32px; background: var(--bg3); }
+  .book-picker-info .bp-title { color: var(--text); font-size: 14px; font-weight: 700; }
+  .book-picker-info .bp-author { color: var(--text-muted); font-size: 12px; }
+
+  @media (max-width: 600px) {
+    #hero-section { padding: 16px; }
+    #currently-reading-row { gap: 12px; }
+    .cr-card { min-width: 100%; }
+    .cr-add-btn { min-width: 100%; }
+    #picks-row { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .pick-info { padding: 8px 8px 10px; }
+    .pick-title { font-size: 11px; }
+    .pick-author { font-size: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -389,6 +445,15 @@
       <button class="btn btn-ghost" id="btn-owner-logout" style="display:none" onclick="ownerLogout()">Public View</button>
       <button class="btn btn-ghost btn-sm" id="drag-toggle" style="display:none" onclick="toggleDragMode()">✥ Rearrange</button>
     </div>
+  </div>
+
+
+  <!-- Hero Section -->
+  <div id="hero-section">
+    <div class="hero-label">📖 Currently Reading</div>
+    <div id="currently-reading-row"></div>
+    <div class="hero-label">⭐ Rachel's Picks This Month</div>
+    <div id="picks-row"></div>
   </div>
 
   <div id="nav-tabs">
@@ -467,6 +532,19 @@
         <button class="btn btn-primary" style="margin-top:16px" onclick="submitRec()">Submit Recommendation</button>
       </div>
       <div id="recs-list"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Book picker modal -->
+<div id="book-picker-modal" class="modal-overlay">
+  <div class="modal-inner">
+    <h3 id="book-picker-title">Choose a Book</h3>
+    <input type="text" id="book-picker-search" placeholder="Search your library…" oninput="filterBookPicker()" style="margin-top:12px">
+    <div id="book-picker-list"></div>
+    <div class="form-actions" style="margin-top:16px">
+      <button class="btn btn-ghost" onclick="closeModal('book-picker-modal')">Cancel</button>
     </div>
   </div>
 </div>
@@ -641,6 +719,7 @@ async function refresh() {
     updateStats();
     populateGenreFilter();
     filterBooks();
+    await loadHero();
     if (isOwner) await refreshRequestsBadge();
   } catch(e) { showToast('Could not load books', 'error'); }
   document.getElementById('loading').style.display = 'none';
@@ -1034,6 +1113,7 @@ function ownerLogin() {
     if (currentBook) showDetail(currentBook);
     if (currentTab==='recs') loadRecsTab();
     if (currentTab==='series') renderSeriesTab();
+    renderHero();
   } else if (code!==null) { showToast('Incorrect code','error'); }
 }
 function ownerLogout() {
@@ -1042,6 +1122,7 @@ function ownerLogout() {
   updateOwnerUI(); showToast('Switched to public view');
   if (currentBook) showDetail(currentBook);
   if (currentTab==='recs') loadRecsTab();
+  renderHero();
   if (currentTab==='series') renderSeriesTab();
 }
 
@@ -1060,6 +1141,153 @@ function populateGenreFilter() {
   sel.value=current;
 }
 
+
+
+// ── Hero Section ──────────────────────────────────────────────────────────────
+let currentlyReading = [];
+let monthlyPicks = [];
+let bookPickerCallback = null;
+
+async function loadHero() {
+  try {
+    const [cr, picks] = await Promise.all([
+      dbFetch('currently_reading?order=added_at.asc'),
+      dbFetch('monthly_picks?order=added_at.asc')
+    ]);
+    currentlyReading = cr || [];
+    monthlyPicks = picks || [];
+    renderHero();
+    document.getElementById('hero-section').classList.add('loaded');
+  } catch(e) {
+    document.getElementById('hero-section').classList.add('loaded');
+  }
+}
+
+function renderHero() {
+  renderCurrentlyReading();
+  renderMonthlyPicks();
+}
+
+function renderCurrentlyReading() {
+  const row = document.getElementById('currently-reading-row');
+  if (!row) return;
+  const cards = currentlyReading.map(cr => {
+    const book = books.find(b => b.id === cr.book_id);
+    if (!book) return '';
+    const cover = book.cover_image
+      ? `<img class="cr-cover" src="${book.cover_image}" alt="${esc(book.title)}">`
+      : `<div class="cr-cover-placeholder">📖</div>`;
+    const removeBtn = isOwner ? `<button class="cr-remove" onclick="removeCurrentlyReading('${cr.id}');event.stopPropagation()">✕</button>` : '';
+    return `<div class="cr-card" onclick="showDetail(books.find(b=>b.id==='${book.id}'))">
+      ${cover}
+      <div class="cr-info">
+        <div class="cr-title">${esc(book.title)}</div>
+        <div class="cr-author">${esc(book.author||'')}</div>
+        <span class="cr-badge">Reading now</span>
+      </div>
+      ${removeBtn}
+    </div>`;
+  }).join('');
+
+  const addBtn = isOwner && currentlyReading.length < 2
+    ? `<div class="cr-add-btn" onclick="openBookPicker('cr')"><span style="font-size:24px">+</span><span>Add Currently Reading</span></div>`
+    : '';
+
+  row.innerHTML = cards + addBtn;
+}
+
+function renderMonthlyPicks() {
+  const row = document.getElementById('picks-row');
+  if (!row) return;
+  const slots = [];
+  for (let i = 0; i < 3; i++) {
+    const pick = monthlyPicks[i];
+    if (pick) {
+      const book = books.find(b => b.id === pick.book_id);
+      if (!book) { slots.push(''); continue; }
+      const cover = book.cover_image
+        ? `<img src="${book.cover_image}" alt="${esc(book.title)}" style="height:100%;left:0;object-fit:cover;position:absolute;top:0;width:100%">`
+        : `<div class="pick-cover-placeholder"><div style="font-size:24px">📖</div><div style="color:#c8b898;font-size:10px;font-family:'Playfair Display',serif;margin-top:4px">${esc(book.title)}</div></div>`;
+      const removeBtn = isOwner ? `<button class="pick-remove" onclick="removePick('${pick.id}');event.stopPropagation()">✕ Remove</button>` : '';
+      slots.push(`<div class="pick-card" onclick="showDetail(books.find(b=>b.id==='${book.id}'))">
+        <div class="pick-cover-wrap">${cover}</div>
+        <div class="pick-info">
+          <div class="pick-title">${esc(book.title)}</div>
+          <div class="pick-author">${esc(book.author||'')}</div>
+        </div>
+        ${removeBtn}
+      </div>`);
+    } else {
+      slots.push(isOwner
+        ? `<div class="pick-add-slot" onclick="openBookPicker('pick')"><span style="font-size:24px">+</span><span>Add a Pick</span></div>`
+        : `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;min-height:180px;opacity:.3"></div>`
+      );
+    }
+  }
+  row.innerHTML = slots.join('');
+}
+
+function openBookPicker(mode) {
+  bookPickerCallback = mode;
+  document.getElementById('book-picker-title').textContent = mode === 'cr' ? 'Add Currently Reading' : 'Add a Pick';
+  document.getElementById('book-picker-search').value = '';
+  filterBookPicker();
+  document.getElementById('book-picker-modal').classList.add('open');
+}
+
+function filterBookPicker() {
+  const q = document.getElementById('book-picker-search').value.toLowerCase();
+  const list = document.getElementById('book-picker-list');
+  const usedIds = bookPickerCallback === 'cr'
+    ? new Set(currentlyReading.map(c => c.book_id))
+    : new Set(monthlyPicks.map(p => p.book_id));
+  const filtered = books.filter(b => !usedIds.has(b.id) && (!q || b.title?.toLowerCase().includes(q) || b.author?.toLowerCase().includes(q)));
+  list.innerHTML = filtered.slice(0, 30).map(b => `
+    <div class="book-picker-item" onclick="selectBookForPicker('${b.id}')">
+      ${b.cover_image ? `<img class="book-picker-thumb" src="${b.cover_image}" alt="">` : `<div class="book-picker-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px">📖</div>`}
+      <div class="book-picker-info">
+        <div class="bp-title">${esc(b.title)}</div>
+        <div class="bp-author">${esc(b.author||'')}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function selectBookForPicker(bookId) {
+  closeModal('book-picker-modal');
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+  try {
+    if (bookPickerCallback === 'cr') {
+      const entry = { id, book_id: bookId, added_at: Date.now() };
+      await dbFetch('currently_reading', { method: 'POST', body: JSON.stringify(entry) });
+      currentlyReading.push(entry);
+      renderCurrentlyReading();
+    } else {
+      const entry = { id, book_id: bookId, added_at: Date.now() };
+      await dbFetch('monthly_picks', { method: 'POST', body: JSON.stringify(entry) });
+      monthlyPicks.push(entry);
+      renderMonthlyPicks();
+    }
+    showToast('Added!');
+  } catch { showToast('Could not add', 'error'); }
+}
+
+async function removeCurrentlyReading(id) {
+  try {
+    await dbFetch(`currently_reading?id=eq.${id}`, { method: 'DELETE' });
+    currentlyReading = currentlyReading.filter(c => c.id !== id);
+    renderCurrentlyReading();
+    showToast('Removed');
+  } catch { showToast('Could not remove', 'error'); }
+}
+
+async function removePick(id) {
+  try {
+    await dbFetch(`monthly_picks?id=eq.${id}`, { method: 'DELETE' });
+    monthlyPicks = monthlyPicks.filter(p => p.id !== id);
+    renderMonthlyPicks();
+    showToast('Removed');
+  } catch { showToast('Could not remove', 'error'); }
+}
 
 // ── Shelf state ────────────────────────────────────────────────────────────────
 let shelfRearrangeMode = false;
