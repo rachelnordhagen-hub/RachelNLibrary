@@ -363,7 +363,7 @@
   #hero-inner { display: flex; gap: 0; align-items: flex-start; }
   #hero-left { flex: 1; min-width: 0; padding-right: 24px; }
   #hero-divider { border-left: 1px solid var(--border); align-self: stretch; flex-shrink: 0; margin: 0 4px; }
-  #hero-right { flex-shrink: 0; padding-left: 24px; }
+  #hero-right { flex: 1; min-width: 0; padding-left: 24px; }
 
   @media (max-width: 700px) {
     #hero-inner { flex-direction: column; gap: 24px; }
@@ -391,7 +391,7 @@
   .cr-add-btn:hover { border-color: var(--gold); color: var(--gold); }
 
   /* Monthly Picks */
-  #picks-row { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 120px)); }
+  #picks-row { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); max-width: 420px; }
   .pick-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; overflow: hidden; position: relative; transition: box-shadow .2s, transform .2s; }
   .pick-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,.5); transform: translateY(-3px); }
   .pick-cover-wrap { padding-top: 140%; position: relative; width: 100%; background: var(--bg3); }
