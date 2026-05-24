@@ -359,6 +359,19 @@
   #hero-section { border-bottom: 1px solid var(--border); padding: 24px; display: none; }
   #hero-section.loaded { display: block; }
 
+  /* Hero inner layout */
+  #hero-inner { display: flex; gap: 0; align-items: flex-start; }
+  #hero-left { flex: 1; min-width: 0; padding-right: 24px; }
+  #hero-divider { border-left: 1px solid var(--border); align-self: stretch; flex-shrink: 0; margin: 0 4px; }
+  #hero-right { flex-shrink: 0; padding-left: 24px; }
+
+  @media (max-width: 700px) {
+    #hero-inner { flex-direction: column; gap: 24px; }
+    #hero-left { padding-right: 0; width: 100%; }
+    #hero-divider { display: none; }
+    #hero-right { padding-left: 0; width: 100%; }
+  }
+
   /* Currently Reading */
   .hero-label { color: var(--text-muted); font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 12px; text-transform: uppercase; }
   #currently-reading-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
@@ -450,10 +463,17 @@
 
   <!-- Hero Section -->
   <div id="hero-section">
-    <div class="hero-label">📖 Currently Reading</div>
-    <div id="currently-reading-row"></div>
-    <div class="hero-label">⭐ Rachel's Quick Recommendations</div>
-    <div id="picks-row"></div>
+    <div id="hero-inner">
+      <div id="hero-left">
+        <div class="hero-label">📖 Currently Reading</div>
+        <div id="currently-reading-row"></div>
+      </div>
+      <div id="hero-divider"></div>
+      <div id="hero-right">
+        <div class="hero-label">⭐ Rachel's Quick Recommendations</div>
+        <div id="picks-row"></div>
+      </div>
+    </div>
   </div>
 
   <div id="nav-tabs">
