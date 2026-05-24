@@ -374,8 +374,8 @@
 
   /* Currently Reading */
   .hero-label { color: var(--text-muted); font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 12px; text-transform: uppercase; }
-  #currently-reading-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
-  .cr-card { align-items: flex-start; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; display: flex; gap: 14px; overflow: hidden; padding: 14px; transition: box-shadow .2s, transform .2s; flex: 1; min-width: 240px; max-width: 420px; position: relative; }
+  #currently-reading-row { display: flex; gap: 12px; flex-direction: column; margin-bottom: 0; }
+  .cr-card { align-items: flex-start; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; display: flex; gap: 14px; overflow: hidden; padding: 14px; transition: box-shadow .2s, transform .2s; width: 100%; position: relative; }
   .cr-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,.5); transform: translateY(-2px); }
   .cr-cover { border-radius: 6px; flex-shrink: 0; height: 90px; object-fit: cover; width: 60px; }
   .cr-cover-placeholder { align-items: center; background: var(--bg3); border-radius: 6px; display: flex; flex-shrink: 0; font-size: 20px; height: 90px; justify-content: center; width: 60px; }
