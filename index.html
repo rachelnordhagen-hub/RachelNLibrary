@@ -425,6 +425,10 @@
     .pick-title { font-size: 11px; }
     .pick-author { font-size: 10px; }
   }
+
+  /* Format badges */
+  .badge-kindle { background: #1a2a4aee; color: #80b0ff; }
+  .format-tag { background: #1a2a4a; border-radius: 20px; color: #80b0ff; font-size: 10px; letter-spacing: .5px; padding: 2px 8px; }
 </style>
 </head>
 <body>
@@ -1612,7 +1616,8 @@ function renderGrid(list,filtered=false) {
 
 function bookCardHTML(book,i) {
   const coverHTML=book.cover_image?`<img src="${book.cover_image}" alt="${esc(book.title)}" loading="lazy">`:`<div class="book-cover-placeholder"><div class="icon">📖</div><div class="ptitle">${esc(book.title||'')}</div></div>`;
-  const badge=book.borrower?`<span class="book-badge badge-out">OUT</span>`:book.tbr?`<span class="book-badge badge-tbr">TBR</span>`:'';
+  const formatBadge=book.book_format==='ebook'?`<span class="book-badge badge-kindle">📱</span>`:book.book_format==='both'?`<span class="book-badge badge-kindle">📚📱</span>`:""
+  const badge=book.borrower?`<span class="book-badge badge-out">OUT</span>`:book.tbr?`<span class="book-badge badge-tbr">TBR</span>`:formatBadge;
   const handle=dragMode?`<span class="drag-handle">⠿</span>`:'';
   const starsHTML=book.rating>0?starsDisplay(book.rating,12):'';
   const seriesHTML=book.series_name?`<div class="book-series-tag">#${book.series_order??'?'} in ${esc(book.series_name)}</div>`:'';
@@ -1677,7 +1682,8 @@ function showDetail(book) {
   document.getElementById('detail-cover').innerHTML=book.cover_image?`<img src="${book.cover_image}" alt="${esc(book.title)}">`:`<div id="detail-cover-placeholder"><span>📖</span></div>`;
 
   const borrowSection=document.getElementById('borrow-section');
-  if (isOwner) { borrowSection.style.display='block'; renderBorrowSection(book); }
+  if (isOwner && book.book_format !== 'ebook') { borrowSection.style.display='block'; renderBorrowSection(book); }
+  else if (isOwner && book.book_format === 'ebook') { borrowSection.style.display='none'; }
   else if (book.borrower) { borrowSection.style.display='block'; document.getElementById('borrow-content').innerHTML=`<div class="borrowed-info"><div class="borrowed-by">📤 Currently borrowed</div></div>`; }
   else { borrowSection.style.display='none'; }
 
@@ -1692,7 +1698,8 @@ function showDetail(book) {
     spiceDetailSection = '<div class="info-box"><div class="info-box-title">Spice</div><div class="spice-row" style="margin-bottom:8px">' + peppersHTML + '</div>' + doorHTML + hintHTML + '</div>';
   }
 
-  const requestBtn=!isOwner&&!book.borrower?`<button class="btn btn-request" style="margin-bottom:16px;width:100%" onclick="openRequestModal(currentBook)">📩 Request to Borrow</button>`:'';
+  const canBorrow = book.book_format !== 'ebook';
+  const requestBtn=!isOwner&&!book.borrower&&canBorrow?`<button class="btn btn-request" style="margin-bottom:16px;width:100%" onclick="openRequestModal(currentBook)">📩 Request to Borrow</button>`:(!isOwner&&book.book_format==='ebook'?`<div style="color:var(--text-dim);font-size:12px;margin-bottom:16px">📱 eBook — not available to borrow</div>`:'');
 
   // Series section — show other books in the same series
   let seriesSection = '';
@@ -1717,6 +1724,7 @@ function showDetail(book) {
       <div id="detail-meta">
         ${book.genre?`<span class="genre-tag">${esc(book.genre)}</span>`:''}
         ${book.series_name?`<span class="series-tag-detail">📚 #${book.series_order??'?'} in ${esc(book.series_name)}</span>`:''}
+        ${book.book_format==='ebook'?`<span class="format-tag">📱 eBook</span>`:book.book_format==='both'?`<span class="format-tag">📚📱 Physical + eBook</span>`:''}
         ${book.tbr?`<span class="tbr-tag">📋 To Be Read</span>`:''}
         <span class="added-date">Added ${new Date(book.added_at).toLocaleDateString()}</span>
       </div>
@@ -1827,6 +1835,7 @@ function showEditDetail() {
       <div class="form-row"><label class="field-label">Book # in Series</label><input id="e-series-order" type="number" value="${b.series_order??''}" placeholder="e.g. 1, 2, 3" min="0" step="0.5"></div>
       <div class="form-row"><label class="field-label">Description</label><textarea id="e-desc" rows="4">${esc(b.description||'')}</textarea></div>
       <div class="form-row"><label class="field-label">Notes</label><textarea id="e-notes" rows="2">${esc(b.notes||'')}</textarea></div>
+      <div class="form-row"><label class="field-label">Format</label><select id="e-format"><option value="physical" ${(b.book_format||'physical')==='physical'?'selected':''}>📚 Physical</option><option value="ebook" ${b.book_format==='ebook'?'selected':''}>📱 eBook / Kindle</option><option value="both" ${b.book_format==='both'?'selected':''}>📚📱 Both</option></select></div>
       <div class="form-row"><label class="field-label">Spice Rating 🌶️</label><div id="edit-spice-row" style="display:flex;gap:4px;margin-top:4px"></div></div>
       <div class="form-row"><label class="field-label">Door Tag</label>
         <select id="e-door-tag">
@@ -1862,6 +1871,7 @@ async function saveEditDetail() {
     notes:document.getElementById('e-notes').value.trim(),
     spice_rating:editSpice,
     door_tag:document.getElementById('e-door-tag').value||null,
+    book_format:document.getElementById('e-format').value||'physical',
   };
   try {
     await updateBook(currentBook.id,patch);
@@ -1884,6 +1894,7 @@ function resetAddForm() {
   ['add-title','add-author','add-description','add-notes','add-series-name','add-series-order'].forEach(id=>document.getElementById(id).value='');
   
   document.getElementById('add-status').value='read';
+  document.getElementById('add-format').value='physical';
   document.getElementById('ai-status').textContent='';
   document.getElementById('ai-status').className='';
   document.getElementById('cover-file').value='';
