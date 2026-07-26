@@ -619,6 +619,23 @@
         <div class="form-row"><label class="field-label">Description</label><textarea id="add-description" rows="3" placeholder="Brief description…"></textarea></div>
         <div class="form-row"><label class="field-label">Personal Notes</label><textarea id="add-notes" rows="2" placeholder="Your thoughts, shelf location, etc…"></textarea></div>
         <div class="form-row" id="add-rating-row"><label class="field-label">Your Rating (optional)</label><div id="add-stars" style="display:flex;gap:4px;margin-top:4px"></div></div>
+        <div class="form-row" id="add-spice-row"><label class="field-label">Spice Rating 🌶️ (optional)</label><div id="add-peppers" style="display:flex;gap:4px;margin-top:2px"></div></div>
+        <div class="form-row" id="add-door-row">
+          <label class="field-label">Door Tag (optional)</label>
+          <select id="add-door-tag">
+            <option value="">— None —</option>
+            <option value="Open Door">Open Door 🔓</option>
+            <option value="Closed Door">Closed Door 🔒</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="field-label">Format</label>
+          <select id="add-format">
+            <option value="physical">📚 Physical</option>
+            <option value="ebook">📱 eBook / Kindle</option>
+            <option value="both">📚📱 Both</option>
+          </select>
+        </div>
         <div class="form-actions">
           <button class="btn btn-primary" id="btn-save-book" onclick="saveBook()">Add to Library</button>
           <button class="btn btn-ghost" onclick="showLibrary()">Cancel</button>
