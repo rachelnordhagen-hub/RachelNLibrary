@@ -361,15 +361,11 @@
 
   /* Hero inner layout */
   #hero-inner { display: flex; gap: 0; align-items: flex-start; }
-  #hero-left { flex: 0 0 50%; padding-right: 24px; }
-  #hero-divider { border-left: 1px solid var(--border); align-self: stretch; flex-shrink: 0; margin: 0 4px; }
-  #hero-right { flex: 0 0 50%; padding-left: 24px; }
+  #hero-left { width: 100%; padding-right: 0; }
 
   @media (max-width: 700px) {
     #hero-inner { flex-direction: column; gap: 24px; }
-    #hero-left { flex: 0 0 100%; padding-right: 0; width: 100%; }
-    #hero-divider { display: none; }
-    #hero-right { flex: 0 0 100%; padding-left: 0; width: 100%; }
+    #hero-left { width: 100%; }
   }
 
   /* Currently Reading */
@@ -474,11 +470,7 @@
         <div class="hero-label">📖 Currently Reading</div>
         <div id="currently-reading-row"></div>
       </div>
-      <div id="hero-divider"></div>
-      <div id="hero-right">
-        <div class="hero-label">⭐ Rachel's Quick Recommendations</div>
-        <div id="picks-row"></div>
-      </div>
+
     </div>
   </div>
 
