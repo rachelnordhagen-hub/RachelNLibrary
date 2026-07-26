@@ -1940,6 +1940,14 @@ async function identifyBook(base64) {
 async function saveBook() {
   const title=document.getElementById('add-title').value.trim();
   if(!title){alert('Please enter a title');return;}
+
+  // Duplicate check
+  const duplicate = books.find(b => b.title.trim().toLowerCase() === title.toLowerCase());
+  if (duplicate) {
+    const proceed = confirm('"' + title + '" is already in your library. Add it anyway?');
+    if (!proceed) return;
+  }
+
   const btn=document.getElementById('btn-save-book');
   btn.disabled=true;btn.textContent='Saving…';
   const seriesOrder=document.getElementById('add-series-order').value;
